@@ -13,11 +13,26 @@ if not os.path.exists('Data/DiscoGeM-2.0'):
 start_time = time.time()
 print(f'Preparing DiscoGeM corpus...')
 
-discogem_columns = ['itemid',
-                    'arg1_singlesentence',
-                    'arg2_singlesentence',
-                    'majority_softlabel',
-                    'majoritylabel_sampled']
+discogem_columns = ['split',
+                    'itemid',
+                    'orig_lang',
+                    'available_langs',
+                    'arg1_context_en',
+                    'arg2_context_en',
+                    'majority_softlabel', # to be changed
+                    'majoritylabel_sampled',  # to be changed
+                    'arg1_context_de',
+                    'arg2_context_de',
+                    'majority_softlabel', # to be changed
+                    'majoritylabel_sampled',  # to be changed
+                    'arg1_context_fr',
+                    'arg2_context_fr',
+                    'majority_softlabel', # to be changed
+                    'majoritylabel_sampled',  # to be changed
+                    'arg1_context_cs',
+                    'arg2_context_cs',
+                    'majority_softlabel', # to be changed
+                    'majoritylabel_sampled']  # to be changed
 
 df_discogem = pd.read_csv('Corpora/DiscoGeM-2.0/DiscoGeM-2.0_corpus/DiscoGeM-2.0_items.csv', usecols = discogem_columns)
 
