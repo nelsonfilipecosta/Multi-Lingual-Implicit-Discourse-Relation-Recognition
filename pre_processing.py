@@ -19,40 +19,106 @@ discogem_columns = ['split',
                     'available_langs',
                     'arg1_context_en',
                     'arg2_context_en',
-                    'majority_softlabel', # to be changed
-                    'majoritylabel_sampled',  # to be changed
+                    'MV_en',
+                    'MV_dist_en',
                     'arg1_context_de',
                     'arg2_context_de',
-                    'majority_softlabel', # to be changed
-                    'majoritylabel_sampled',  # to be changed
+                    'MV_de',
+                    'MV_dist_de',
                     'arg1_context_fr',
                     'arg2_context_fr',
-                    'majority_softlabel', # to be changed
-                    'majoritylabel_sampled',  # to be changed
+                    'MV_fr',
+                    'MV_dist_fr',
                     'arg1_context_cs',
                     'arg2_context_cs',
-                    'majority_softlabel', # to be changed
-                    'majoritylabel_sampled']  # to be changed
+                    'MV_cs',
+                    'MV_dist_cs']
 
-df_discogem = pd.read_csv('Corpora/DiscoGeM-2.0/DiscoGeM-2.0_corpus/DiscoGeM-2.0_items.csv', usecols = discogem_columns)
+df_discogem = pd.read_csv('Corpora/DiscoGeM-2.0/DiscoGeM-2.0_corpus/DiscoGeM-2.0_items.csv', usecols = discogem_columns, delimiter='\t', dtype=str)
 
-df_discogem['arg1_arg2'] = df_discogem['arg1_singlesentence'].copy() + ' ' + df_discogem['arg2_singlesentence'].copy()
+df_discogem['arg1_arg2_en'] = df_discogem['arg1_context_en'].copy() + ' ' + df_discogem['arg2_context_en'].copy()
+df_discogem['arg1_arg2_de'] = df_discogem['arg1_context_de'].copy() + ' ' + df_discogem['arg2_context_de'].copy()
+df_discogem['arg1_arg2_fr'] = df_discogem['arg1_context_fr'].copy() + ' ' + df_discogem['arg2_context_fr'].copy()
+df_discogem['arg1_arg2_cs'] = df_discogem['arg1_context_cs'].copy() + ' ' + df_discogem['arg2_context_cs'].copy()
 
-df_discogem = df_discogem[['itemid', 'arg1_singlesentence', 'arg2_singlesentence', 'arg1_arg2', 'majoritylabel_sampled', 'majority_softlabel']]
+df_discogem = df_discogem[['split',
+                           'itemid',
+                           'orig_lang',
+                           'available_langs',
+                           'arg1_context_en',
+                           'arg2_context_en',
+                           'arg1_arg2_en',
+                           'MV_en',
+                           'MV_dist_en',
+                           'arg1_context_de',
+                           'arg2_context_de',
+                           'arg1_arg2_de',
+                           'MV_de',
+                           'MV_dist_de',
+                           'arg1_context_fr',
+                           'arg2_context_fr',
+                           'arg1_arg2_fr',
+                           'MV_fr',
+                           'MV_dist_fr',
+                           'arg1_context_cs',
+                           'arg2_context_cs',
+                           'arg1_arg2_cs',
+                           'MV_cs',
+                           'MV_dist_cs']]
 
-df_discogem.rename(columns={'arg1_singlesentence': 'arg1', 'arg2_singlesentence': 'arg2', 'majoritylabel_sampled': 'majority_level_3'}, inplace=True)
+df_discogem.rename(columns={'arg1_context_en': 'arg1_en',
+                            'arg2_context_en': 'arg2_en',
+                            'MV_en': 'majority_level_3_en',
+                            'arg1_context_de': 'arg1_de',
+                            'arg2_context_de': 'arg2_de',
+                            'MV_de': 'majority_level_3_de',
+                            'arg1_context_fr': 'arg1_fr',
+                            'arg2_context_fr': 'arg2_fr',
+                            'MV_fr': 'majority_level_3_fr',
+                            'arg1_context_cs': 'arg1_cs',
+                            'arg2_context_cs': 'arg2_cs',
+                            'MV_cs': 'majority_level_3_cs'},
+                   inplace=True)
 
-label_names = re.findall(r'[\w\-]+(?=\:)', df_discogem['majority_softlabel'].iloc[0])
+df_discogem['available_langs'] = df_discogem['available_langs'].str.replace("[", "").str.replace("]", "").str.replace("'", "")
+df_discogem['MV_dist_en'] = df_discogem['MV_dist_en'].str.replace("{", "").str.replace("}", "").str.replace(",", ";").str.replace("'", "").str.replace(": ", ":")
+df_discogem['MV_dist_de'] = df_discogem['MV_dist_de'].str.replace("{", "").str.replace("}", "").str.replace(",", ";").str.replace("'", "").str.replace(": ", ":")
+df_discogem['MV_dist_fr'] = df_discogem['MV_dist_fr'].str.replace("{", "").str.replace("}", "").str.replace(",", ";").str.replace("'", "").str.replace(": ", ":")
+df_discogem['MV_dist_cs'] = df_discogem['MV_dist_cs'].str.replace("{", "").str.replace("}", "").str.replace(",", ";").str.replace("'", "").str.replace(": ", ":")
 
-for i in label_names:
-    df_discogem[i] = ''
+label_names = re.findall(r'[\w\-]+(?=\:)', df_discogem['MV_dist_en'].iloc[0])
 
-for row in range(len(df_discogem['majority_softlabel'])):
-    label_values = re.findall(r'(?<=:)(\d\.?(\d*)?)', df_discogem['majority_softlabel'].iloc[row])
-    for i in range(len(label_names)):
-        df_discogem.loc[row, label_names[i]] = label_values[i][0]
+lang_iter = 0
+for lang in ['_en', '_de', '_fr', '_cs']:
+    for i in label_names:
+        df_discogem.insert(9+lang_iter, i+lang, '')
+        lang_iter += 1
+    lang_iter += 5
 
-df_discogem.drop(columns=['majority_softlabel'], inplace=True)
+df_discogem = df_discogem.copy()  # defragment dataframe to reorganize memory
+
+for lang in ['_en', '_de', '_fr', '_cs']:
+    for row in range(len(df_discogem['MV_dist'+lang])):
+        
+        cell_value = str(df_discogem['MV_dist'+lang].iloc[row]) # convert to string to avoid NaN values
+        
+        if cell_value:
+            label_values = re.findall(r'(?<=:)(\d\.?(\d*)?)', cell_value)
+        else:
+            label_values = [] # skip regex processing if there are no values
+        
+        for i in range(len(label_names)):
+            if i < len(label_values): # if there are values to assign
+                df_discogem.loc[row, label_names[i]+lang] = label_values[i][0]
+
+df_discogem.drop(columns=['MV_dist_en'], inplace=True)
+df_discogem.drop(columns=['MV_dist_de'], inplace=True)
+df_discogem.drop(columns=['MV_dist_fr'], inplace=True)
+df_discogem.drop(columns=['MV_dist_cs'], inplace=True)
+
+df_discogem.to_csv('Data/DiscoGeM-2.0/discogem_2.csv', index=False)
+
+'''
 
 #####
 
@@ -195,3 +261,4 @@ df_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_validation.csv', index=False)
 df_test.to_csv('Data/DiscoGeM-2.0/discogem_2_test.csv', index=False)
 
 print(f'Completed in {(time.time()-start_time)/60:.2f} minutes.')
+'''
