@@ -2,7 +2,6 @@ import os
 import time
 import pandas as pd
 import regex as re
-from sklearn.model_selection import ShuffleSplit
 
 if not os.path.exists('Data'):
    os.makedirs('Data')
