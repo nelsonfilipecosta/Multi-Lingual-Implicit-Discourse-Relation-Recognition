@@ -20,6 +20,7 @@ for folder in os.listdir(gold_path):
                 if (line.startswith('Implicit')) or ((line.startswith('Explicit'))):
                     gold_list.append(line.rstrip()+'||folder_'+folder+'||file_'+file)
 
+relation_list = []
 connective_list = []
 multi_connective_list = []
 sense_list = []
@@ -29,6 +30,8 @@ arg2_span_list = []
 folder_list = []
 file_list = []
 for discourse_relation in gold_list:
+    relation = re.search(r'^[^|]+',discourse_relation)
+    relation_list.append(relation.group(0))
     connective = re.search(r'(?<=(([\w\s\-\+\.\;\(\)\/\']+)?\|){7})([\w\s\']+)(?=\|)', discourse_relation)
     connective_list.append(connective.group(0))
     sense = re.search(r'(?<=(([\w\s\-\+\.\;\(\)\/\']+)?\|){8})([\w\s\.\+\-]+)(?=\|)', discourse_relation)
@@ -121,6 +124,7 @@ for i in range(len(gold_list)):
 
 df = pd.DataFrame({'folder':            folder_list,
                    'file':              file_list,
+                   'relation':          relation_list,
                    'arg1':              arg1_list,
                    'arg2':              arg2_list,
                    'connective':        connective_list,
@@ -138,8 +142,8 @@ df = pd.DataFrame({'folder':            folder_list,
 
 df['arg1_arg2'] = df['arg1'].copy() + ' ' + df['arg2'].copy()
 
-df = df[['folder', 'file', 'arg1', 'arg2', 'arg1_arg2', 'connective', 'sense', 'sense_final', 'sense1', 'sense2', 'sense3',
-         'multi_connective', 'multi_sense', 'multi_sense_final', 'multi_sense1', 'multi_sense2', 'multi_sense3']]
+df = df[['folder', 'file', 'relation', 'arg1', 'arg2', 'arg1_arg2', 'connective', 'sense', 'sense_final', 'sense1', 'sense2',
+         'sense3', 'multi_connective', 'multi_sense', 'multi_sense_final', 'multi_sense1', 'multi_sense2', 'multi_sense3']]
 
 df['majority_level_2'] = df['sense2']
 df['synchronous'] = 0.0
