@@ -191,6 +191,13 @@ df_discogem = df_discogem[['split', 'itemid', 'orig_lang', 'available_langs', 'a
                            'arg2-as-excpt_cs', 'arg1-as-instance_cs', 'arg2-as-instance_cs', 'arg1-as-detail_cs', 'arg2-as-detail_cs', 'arg1-as-manner_cs',
                            'arg2-as-manner_cs', 'arg1-as-subst_cs', 'arg2-as-subst_cs', 'norel_cs']]
 
+df_discogem_train = df_discogem[df_discogem['split'] == 'train']
+df_discogem_validation = df_discogem[df_discogem['split'] == 'dev']
+df_discogem_test = df_discogem[df_discogem['split'] == 'test']
+
 df_discogem.to_csv('Data/DiscoGeM-2.0/discogem_2.csv', index=False)
+df_discogem_train.to_csv('Data/DiscoGeM-2.0/discogem_2_train.csv', index=False)
+df_discogem_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_validation.csv', index=False)
+df_discogem_test.to_csv('Data/DiscoGeM-2.0/discogem_2_test.csv', index=False)
 
 print(f'Completed in {(time.time()-start_time)/60:.2f} minutes.')
