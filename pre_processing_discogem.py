@@ -200,4 +200,147 @@ df_discogem_train.to_csv('Data/DiscoGeM-2.0/discogem_2_train.csv', index=False)
 df_discogem_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_validation.csv', index=False)
 df_discogem_test.to_csv('Data/DiscoGeM-2.0/discogem_2_test.csv', index=False)
 
+en_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_en', 'majority_level_1_en', 'temporal_en', 'contingency_en',
+              'comparison_en', 'expansion_en', 'majority_level_2_en', 'synchronous_en', 'asynchronous_en', 'cause_en', 'condition_en',
+              'neg-condition_en', 'purpose_en', 'concession_en', 'contrast_en', 'similarity_en', 'conjunction_en', 'disjunction_en',
+              'equivalence_en', 'exception_en', 'instantiation_en', 'level-of-detail_en', 'manner_en', 'substitution_en', 'majority_level_3_en',
+              'synchronous_3_en', 'precedence_en', 'succession_en', 'reason_en', 'result_en', 'arg1-as-cond_en', 'arg2-as-cond_en',
+              'arg1-as-negcond_en', 'arg2-as-negcond_en', 'arg1-as-goal_en', 'arg2-as-goal_en', 'arg1-as-denier_en', 'arg2-as-denier_en',
+              'contrast_3_en', 'similarity_3_en', 'conjunction_3_en', 'disjunction_3_en', 'equivalence_3_en', 'arg1-as-excpt_en', 'arg2-as-excpt_en',
+              'arg1-as-instance_en', 'arg2-as-instance_en', 'arg1-as-detail_en', 'arg2-as-detail_en', 'arg1-as-manner_en', 'arg2-as-manner_en',
+              'arg1-as-subst_en', 'arg2-as-subst_en', 'norel_en']
+
+de_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_de', 'majority_level_1_de', 'temporal_de', 'contingency_de',
+              'comparison_de', 'expansion_de', 'majority_level_2_de', 'synchronous_de', 'asynchronous_de', 'cause_de', 'condition_de',
+              'neg-condition_de', 'purpose_de', 'concession_de', 'contrast_de', 'similarity_de', 'conjunction_de', 'disjunction_de',
+              'equivalence_de', 'exception_de', 'instantiation_de', 'level-of-detail_de', 'manner_de', 'substitution_de', 'majority_level_3_de',
+              'synchronous_3_de', 'precedence_de', 'succession_de', 'reason_de', 'result_de', 'arg1-as-cond_de', 'arg2-as-cond_de',
+              'arg1-as-negcond_de', 'arg2-as-negcond_de', 'arg1-as-goal_de', 'arg2-as-goal_de', 'arg1-as-denier_de', 'arg2-as-denier_de',
+              'contrast_3_de', 'similarity_3_de', 'conjunction_3_de', 'disjunction_3_de', 'equivalence_3_de', 'arg1-as-excpt_de', 'arg2-as-excpt_de',
+              'arg1-as-instance_de', 'arg2-as-instance_de', 'arg1-as-detail_de', 'arg2-as-detail_de', 'arg1-as-manner_de', 'arg2-as-manner_de',
+              'arg1-as-subst_de', 'arg2-as-subst_de', 'norel_de']
+
+fr_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_fr', 'majority_level_1_fr', 'temporal_fr', 'contingency_fr',
+              'comparison_fr', 'expansion_fr', 'majority_level_2_fr', 'synchronous_fr', 'asynchronous_fr', 'cause_fr', 'condition_fr',
+              'neg-condition_fr', 'purpose_fr', 'concession_fr', 'contrast_fr', 'similarity_fr', 'conjunction_fr', 'disjunction_fr',
+              'equivalence_fr', 'exception_fr', 'instantiation_fr', 'level-of-detail_fr', 'manner_fr', 'substitution_fr', 'majority_level_3_fr',
+              'synchronous_3_fr', 'precedence_fr', 'succession_fr', 'reason_fr', 'result_fr', 'arg1-as-cond_fr', 'arg2-as-cond_fr',
+              'arg1-as-negcond_fr', 'arg2-as-negcond_fr', 'arg1-as-goal_fr', 'arg2-as-goal_fr', 'arg1-as-denier_fr', 'arg2-as-denier_fr',
+              'contrast_3_fr', 'similarity_3_fr', 'conjunction_3_fr', 'disjunction_3_fr', 'equivalence_3_fr', 'arg1-as-excpt_fr', 'arg2-as-excpt_fr',
+              'arg1-as-instance_fr', 'arg2-as-instance_fr', 'arg1-as-detail_fr', 'arg2-as-detail_fr', 'arg1-as-manner_fr', 'arg2-as-manner_fr',
+              'arg1-as-subst_fr', 'arg2-as-subst_fr', 'norel_fr']
+
+cs_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_cs', 'majority_level_1_cs', 'temporal_cs', 'contingency_cs',
+              'comparison_cs', 'expansion_cs', 'majority_level_2_cs', 'synchronous_cs', 'asynchronous_cs', 'cause_cs', 'condition_cs',
+              'neg-condition_cs', 'purpose_cs', 'concession_cs', 'contrast_cs', 'similarity_cs', 'conjunction_cs', 'disjunction_cs',
+              'equivalence_cs', 'exception_cs', 'instantiation_cs', 'level-of-detail_cs', 'manner_cs', 'substitution_cs', 'majority_level_3_cs',
+              'synchronous_3_cs', 'precedence_cs', 'succession_cs', 'reason_cs', 'result_cs', 'arg1-as-cond_cs', 'arg2-as-cond_cs',
+              'arg1-as-negcond_cs', 'arg2-as-negcond_cs', 'arg1-as-goal_cs', 'arg2-as-goal_cs', 'arg1-as-denier_cs', 'arg2-as-denier_cs',
+              'contrast_3_cs', 'similarity_3_cs', 'conjunction_3_cs', 'disjunction_3_cs', 'equivalence_3_cs', 'arg1-as-excpt_cs', 'arg2-as-excpt_cs',
+              'arg1-as-instance_cs', 'arg2-as-instance_cs', 'arg1-as-detail_cs', 'arg2-as-detail_cs', 'arg1-as-manner_cs', 'arg2-as-manner_cs',
+              'arg1-as-subst_cs', 'arg2-as-subst_cs', 'norel_cs']
+
+df_discogem_single_lang_en = df_discogem[en_columns].copy()
+df_discogem_single_lang_de = df_discogem[de_columns].copy()
+df_discogem_single_lang_fr = df_discogem[fr_columns].copy()
+df_discogem_single_lang_cs = df_discogem[cs_columns].copy()
+
+df_discogem_single_lang_de.dropna(subset=['majority_level_1_de'], inplace=True)
+df_discogem_single_lang_fr.dropna(subset=['majority_level_1_fr'], inplace=True)
+df_discogem_single_lang_cs.dropna(subset=['majority_level_1_cs'], inplace=True)
+
+df_discogem_single_lang_en.insert(4, 'inst_lang', 'en')
+df_discogem_single_lang_de.insert(4, 'inst_lang', 'de')
+df_discogem_single_lang_fr.insert(4, 'inst_lang', 'fr')
+df_discogem_single_lang_cs.insert(4, 'inst_lang', 'cs')
+
+single_lang_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'inst_lang', 'arg1_arg2', 'majority_level_1',
+                       'temporal', 'contingency', 'comparison', 'expansion', 'majority_level_2', 'synchronous', 'asynchronous',
+                       'cause', 'condition', 'neg-condition', 'purpose', 'concession', 'contrast', 'similarity', 'conjunction',
+                       'disjunction', 'equivalence', 'exception', 'instantiation', 'level-of-detail', 'manner', 'substitution',
+                       'majority_level_3', 'synchronous_3', 'precedence', 'succession', 'reason', 'result', 'arg1-as-cond', 'arg2-as-cond',
+                       'arg1-as-negcond', 'arg2-as-negcond', 'arg1-as-goal', 'arg2-as-goal', 'arg1-as-denier', 'arg2-as-denier', 'contrast_3',
+                       'similarity_3', 'conjunction_3', 'disjunction_3', 'equivalence_3', 'arg1-as-excpt', 'arg2-as-excpt', 'arg1-as-instance',
+                       'arg2-as-instance', 'arg1-as-detail', 'arg2-as-detail', 'arg1-as-manner', 'arg2-as-manner', 'arg1-as-subst',
+                       'arg2-as-subst', 'norel']
+
+df_discogem_single_lang_en.columns = single_lang_columns
+df_discogem_single_lang_de.columns = single_lang_columns
+df_discogem_single_lang_fr.columns = single_lang_columns
+df_discogem_single_lang_cs.columns = single_lang_columns
+
+# english
+
+df_discogem_single_lang_en['majority_level_1'] = df_discogem_single_lang_en['majority_level_1'].str.replace(r'_en$', '', regex=True)
+df_discogem_single_lang_en['majority_level_2'] = df_discogem_single_lang_en['majority_level_2'].str.replace(r'_en$', '', regex=True)
+df_discogem_single_lang_en['majority_level_3'] = df_discogem_single_lang_en['majority_level_3'].str.replace(r'_en$', '', regex=True)
+
+df_discogem_single_lang_en_train = df_discogem_single_lang_en[df_discogem_single_lang_en['split'] == 'train']
+df_discogem_single_lang_en_validation = df_discogem_single_lang_en[df_discogem_single_lang_en['split'] == 'dev']
+df_discogem_single_lang_en_test = df_discogem_single_lang_en[df_discogem_single_lang_en['split'] == 'test']
+
+df_discogem_single_lang_en.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en.csv', index=False)
+df_discogem_single_lang_en_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_train.csv', index=False)
+df_discogem_single_lang_en_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_validation.csv', index=False)
+df_discogem_single_lang_en_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_test.csv', index=False)
+
+# german
+
+df_discogem_single_lang_de['majority_level_1'] = df_discogem_single_lang_de['majority_level_1'].str.replace(r'_de$', '', regex=True)
+df_discogem_single_lang_de['majority_level_2'] = df_discogem_single_lang_de['majority_level_2'].str.replace(r'_de$', '', regex=True)
+df_discogem_single_lang_de['majority_level_3'] = df_discogem_single_lang_de['majority_level_3'].str.replace(r'_de$', '', regex=True)
+
+df_discogem_single_lang_de_train = df_discogem_single_lang_de[df_discogem_single_lang_de['split'] == 'train']
+df_discogem_single_lang_de_validation = df_discogem_single_lang_de[df_discogem_single_lang_de['split'] == 'dev']
+df_discogem_single_lang_de_test = df_discogem_single_lang_de[df_discogem_single_lang_de['split'] == 'test']
+
+df_discogem_single_lang_de.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de.csv', index=False)
+df_discogem_single_lang_de_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_train.csv', index=False)
+df_discogem_single_lang_de_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_validation.csv', index=False)
+df_discogem_single_lang_de_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_test.csv', index=False)
+
+# french
+
+df_discogem_single_lang_fr['majority_level_1'] = df_discogem_single_lang_fr['majority_level_1'].str.replace(r'_fr$', '', regex=True)
+df_discogem_single_lang_fr['majority_level_2'] = df_discogem_single_lang_fr['majority_level_2'].str.replace(r'_fr$', '', regex=True)
+df_discogem_single_lang_fr['majority_level_3'] = df_discogem_single_lang_fr['majority_level_3'].str.replace(r'_fr$', '', regex=True)
+
+df_discogem_single_lang_fr_train = df_discogem_single_lang_fr[df_discogem_single_lang_fr['split'] == 'train']
+df_discogem_single_lang_fr_validation = df_discogem_single_lang_fr[df_discogem_single_lang_fr['split'] == 'frv']
+df_discogem_single_lang_fr_test = df_discogem_single_lang_fr[df_discogem_single_lang_fr['split'] == 'test']
+
+df_discogem_single_lang_fr.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr.csv', index=False)
+df_discogem_single_lang_fr_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_train.csv', index=False)
+df_discogem_single_lang_fr_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_validation.csv', index=False)
+df_discogem_single_lang_fr_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_test.csv', index=False)
+
+# czech
+
+df_discogem_single_lang_cs['majority_level_1'] = df_discogem_single_lang_cs['majority_level_1'].str.replace(r'_cs$', '', regex=True)
+df_discogem_single_lang_cs['majority_level_2'] = df_discogem_single_lang_cs['majority_level_2'].str.replace(r'_cs$', '', regex=True)
+df_discogem_single_lang_cs['majority_level_3'] = df_discogem_single_lang_cs['majority_level_3'].str.replace(r'_cs$', '', regex=True)
+
+df_discogem_single_lang_cs_train = df_discogem_single_lang_cs[df_discogem_single_lang_cs['split'] == 'train']
+df_discogem_single_lang_cs_validation = df_discogem_single_lang_cs[df_discogem_single_lang_cs['split'] == 'dev']
+df_discogem_single_lang_cs_test = df_discogem_single_lang_cs[df_discogem_single_lang_cs['split'] == 'test']
+
+df_discogem_single_lang_cs.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs.csv', index=False)
+df_discogem_single_lang_cs_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_train.csv', index=False)
+df_discogem_single_lang_cs_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_validation.csv', index=False)
+df_discogem_single_lang_cs_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_test.csv', index=False)
+
+# all languages
+
+df_discogem_single_lang = pd.concat([df_discogem_single_lang_en, df_discogem_single_lang_de,
+                                     df_discogem_single_lang_fr, df_discogem_single_lang_cs])
+
+df_discogem_single_lang_train = df_discogem_single_lang[df_discogem_single_lang['split'] == 'train']
+df_discogem_single_lang_validation = df_discogem_single_lang[df_discogem_single_lang['split'] == 'dev']
+df_discogem_single_lang_test = df_discogem_single_lang[df_discogem_single_lang['split'] == 'test']
+
+df_discogem_single_lang.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang.csv', index=False)
+df_discogem_single_lang_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_train.csv', index=False)
+df_discogem_single_lang_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_validation.csv', index=False)
+df_discogem_single_lang_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_test.csv', index=False)
+
 print(f'Completed in {(time.time()-start_time)/60:.2f} minutes.')
