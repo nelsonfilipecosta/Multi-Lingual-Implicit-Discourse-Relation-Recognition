@@ -331,16 +331,16 @@ df_discogem_single_lang_cs_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lan
 
 # all languages
 
-df_discogem_single_lang = pd.concat([df_discogem_single_lang_en, df_discogem_single_lang_de,
-                                     df_discogem_single_lang_fr, df_discogem_single_lang_cs])
+df_discogem_single_lang_all = pd.concat([df_discogem_single_lang_en, df_discogem_single_lang_de,
+                                         df_discogem_single_lang_fr, df_discogem_single_lang_cs])
 
-df_discogem_single_lang_train = df_discogem_single_lang[df_discogem_single_lang['split'] == 'train']
-df_discogem_single_lang_validation = df_discogem_single_lang[df_discogem_single_lang['split'] == 'dev']
-df_discogem_single_lang_test = df_discogem_single_lang[df_discogem_single_lang['split'] == 'test']
+df_discogem_single_lang_all_train = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'train']
+df_discogem_single_lang_all_validation = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'dev']
+df_discogem_single_lang_all_test = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'test']
 
-df_discogem_single_lang.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang.csv', index=False)
-df_discogem_single_lang_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_train.csv', index=False)
-df_discogem_single_lang_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_validation.csv', index=False)
-df_discogem_single_lang_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_test.csv', index=False)
+df_discogem_single_lang_all.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all.csv', index=False)
+df_discogem_single_lang_all_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_train.csv', index=False)
+df_discogem_single_lang_all_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_validation.csv', index=False)
+df_discogem_single_lang_all_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_test.csv', index=False)
 
 print(f'Completed in {(time.time()-start_time)/60:.2f} minutes.')
