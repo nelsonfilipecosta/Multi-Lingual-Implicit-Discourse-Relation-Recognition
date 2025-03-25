@@ -35,6 +35,8 @@ discogem_columns = ['split',
 
 df_discogem = pd.read_csv('Corpora/DiscoGeM-2.0/DiscoGeM-2.0_corpus/DiscoGeM-2.0_items.csv', usecols=discogem_columns, delimiter='\t', dtype=str)
 
+df_discogem = df_discogem.replace(r'<SPEAKER[^>]*>', '', regex=True) # remove <SPEAKER ... > from data
+
 df_discogem['arg1_arg2_en'] = df_discogem['arg1_context_en'].copy() + ' ' + df_discogem['arg2_context_en'].copy()
 df_discogem['arg1_arg2_de'] = df_discogem['arg1_context_de'].copy() + ' ' + df_discogem['arg2_context_de'].copy()
 df_discogem['arg1_arg2_fr'] = df_discogem['arg1_context_fr'].copy() + ' ' + df_discogem['arg2_context_fr'].copy()
