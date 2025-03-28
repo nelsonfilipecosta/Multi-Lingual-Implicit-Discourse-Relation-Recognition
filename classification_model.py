@@ -50,8 +50,8 @@ if LEARNING_RATE not in [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]:
     exit()
 
 SCHEDULER = sys.argv[6]
-if SCHEDULER not in ['linear', 'cosine']:
-    print('Type a valid scheduler: linear or cosine.')
+if SCHEDULER not in ['linear', 'cosine', 'none']:
+    print('Type a valid scheduler: linear, cosine or none.')
     exit()
 
 WANDB = 0 # set 1 for logging and 0 for local runs
@@ -248,7 +248,7 @@ def get_single_metrics(level, labels, predictions):
     return f1_score, precision, recall
 
 
-def train_loop(dataloader):
+def train_loop(dataloader, scheduler_bool=False):
     'Train loop of the classification model.'
 
     model.train()
@@ -263,7 +263,8 @@ def train_loop(dataloader):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        scheduler.step()
+        if scheduler_bool == True:
+            scheduler.step()
 
         # log results every 10 batches
         if not batch_idx % 10:
@@ -290,7 +291,7 @@ def train_loop(dataloader):
     return model.state_dict()
 
 
-def test_loop(mode, dataloader, iteration=None):
+def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
     'Validation and test loop of the classification model.'
 
     # group metric across all batches
@@ -331,12 +332,16 @@ def test_loop(mode, dataloader, iteration=None):
             os.makedirs('Results/DiscoGeM-2.0_' + LANG)
 
     if mode == 'Testing':
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l1' + '_' + str(iteration) + '.txt', np.array(labels_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l2' + '_' + str(iteration) + '.txt', np.array(labels_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l3' + '_' + str(iteration) + '.txt', np.array(labels_l3), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l1' + '_' + str(iteration) + '.txt', np.array(predictions_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l2' + '_' + str(iteration) + '.txt', np.array(predictions_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l3' + '_' + str(iteration) + '.txt', np.array(predictions_l3), delimiter = ',')
+        if scheduler_bool == False:
+            results_path = LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(iteration)+'.txt'
+        else:
+            results_path = LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+ '_'+str(iteration)+'.txt'
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l1_' + results_path, np.array(predictions_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l2_' + results_path, np.array(predictions_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l3_' + results_path, np.array(predictions_l3), delimiter = ',')
 
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
@@ -390,14 +395,17 @@ for i in range(3):
     # choose scheduler
     if SCHEDULER == 'linear':
         scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_factor=0.5, total_iters=int(EPOCHS/2))
-    else:
+    elif SCHEDULER == 'cosine':
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, int(EPOCHS/3), eta_min=0.5*LEARNING_RATE)
 
     print('Starting training...')
     start_time = time.time()
 
     for epoch in range(EPOCHS):
-        model_dict = train_loop(train_loader)
+        if SCHEDULER == 'none':
+            model_dict = train_loop(train_loader)
+        else:
+            model_dict = train_loop(train_loader, scheduler_bool=True)
         test_loop('Validation', validation_loader)
     
     # save model configuration
@@ -406,10 +414,16 @@ for i in range(3):
     if not os.path.exists('Models/DiscoGeM-2.0_' + LANG):
         os.makedirs('Models/DiscoGeM-2.0_' + LANG)
 
-    model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+    if SCHEDULER == 'none':
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+    else:
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
     torch.save(model_dict, model_path)
 
-    test_loop('Testing', test_loader, i)
+    if SCHEDULER == 'none':
+        test_loop('Testing', test_loader, iteration=i)
+    else:
+        test_loop('Testing', test_loader, scheduler_bool=True, iteration=i+1)
 
     print(f'Total training time: {(time.time()-start_time)/60:.2f} minutes')
 
