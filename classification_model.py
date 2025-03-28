@@ -20,27 +20,36 @@ NUMBER_OF_SENSES = {'level_1': 4,
                     'level_2': 17,
                     'level_3': 28}
 
-MODEL_NAME = sys.argv[1]
+if len(sys.argv) != 7:
+    print('The expected comand should be: python classification_model.py language model loss optimizer learning_rate scheduler')
+    sys.exit()
+
+LANG = sys.argv[1]
+if LANG not in ['all', 'en', 'de', 'fr', 'cs']:
+    print('Type a valid language: all, en, de, fr or cs.')
+    exit()
+
+MODEL_NAME = sys.argv[2]
 if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base']:
     print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base or distilroberta-base.')
     exit()
 
-LOSS = sys.argv[2]
+LOSS = sys.argv[3]
 if LOSS not in ['cross-entropy', 'l1', 'l2', 'smooth-l1']:
     print('Type a valid loss: cross-entropy, l1, l2 or smooth-l1.')
     exit()
 
-OPTIMIZER = sys.argv[3]
+OPTIMIZER = sys.argv[4]
 if OPTIMIZER not in ['adam', 'adamw', 'sgd', 'rms']:
     print('Type a valid optimizer: adam, adamw, sgd or rms.')
     exit()
 
-LEARNING_RATE = float(sys.argv[4])
+LEARNING_RATE = float(sys.argv[5])
 if LEARNING_RATE not in [1e-4, 5e-5, 1e-5, 5e-6, 1e-6]:
     print('Type a valid learning rate: 1e-4, 5e-5, 1e-5, 5e-6 or 1e-6.')
     exit()
 
-SCHEDULER = sys.argv[5]
+SCHEDULER = sys.argv[6]
 if SCHEDULER not in ['linear', 'cosine']:
     print('Type a valid scheduler: linear or cosine.')
     exit()
@@ -318,16 +327,16 @@ def test_loop(mode, dataloader, iteration=None):
     if i != None:
         if not os.path.exists('Results'):
             os.makedirs('Results')
-        if not os.path.exists('Results/DiscoGeM-2.0_' + str(iteration)):
-            os.makedirs('Results/DiscoGeM-2.0_' + str(iteration))
+        if not os.path.exists('Results/DiscoGeM-2.0_' + LANG):
+            os.makedirs('Results/DiscoGeM-2.0_' + LANG)
 
     if mode == 'Testing':
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l1.txt', np.array(labels_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l2.txt', np.array(labels_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l3.txt', np.array(labels_l3), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l1.txt', np.array(predictions_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l2.txt', np.array(predictions_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l3.txt', np.array(predictions_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l1' + '_' + str(iteration) + '.txt', np.array(labels_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l2' + '_' + str(iteration) + '.txt', np.array(labels_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l3' + '_' + str(iteration) + '.txt', np.array(labels_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l1' + '_' + str(iteration) + '.txt', np.array(predictions_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l2' + '_' + str(iteration) + '.txt', np.array(predictions_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l3' + '_' + str(iteration) + '.txt', np.array(predictions_l3), delimiter = ',')
 
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
@@ -352,9 +361,9 @@ for i in range(3):
                                                      'Optimizer': OPTIMIZER,
                                                      'Learning Rate': LEARNING_RATE})
     
-    train_loader      = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_train.csv')
-    validation_loader = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_validation.csv')
-    test_loader       = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_test.csv')
+    train_loader      = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_train.csv')
+    validation_loader = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_validation.csv')
+    test_loader       = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_test.csv')
 
     model = Multi_IDDR_Classifier(MODEL_NAME, NUMBER_OF_SENSES)
 
@@ -392,10 +401,13 @@ for i in range(3):
         test_loop('Validation', validation_loader)
     
     # save model configuration
-    folder = 'Model_'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(i+1)
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-    torch.save(model_dict, folder+'/model.pth')
+    if not os.path.exists('Models'):
+        os.makedirs('Models')
+    if not os.path.exists('Models/DiscoGeM-2.0_' + LANG):
+        os.makedirs('Models/DiscoGeM-2.0_' + LANG)
+
+    model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+    torch.save(model_dict, model_path)
 
     test_loop('Testing', test_loader, i)
 
