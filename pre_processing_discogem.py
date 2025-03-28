@@ -290,10 +290,10 @@ df_discogem_single_lang_en_train = df_discogem_single_lang_en[df_discogem_single
 df_discogem_single_lang_en_validation = df_discogem_single_lang_en[df_discogem_single_lang_en['split'] == 'dev']
 df_discogem_single_lang_en_test = df_discogem_single_lang_en[df_discogem_single_lang_en['split'] == 'test']
 
-df_discogem_single_lang_en.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en.csv', index=False)
-df_discogem_single_lang_en_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_train.csv', index=False)
-df_discogem_single_lang_en_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_validation.csv', index=False)
-df_discogem_single_lang_en_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_en_test.csv', index=False)
+df_discogem_single_lang_en.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_en.csv', index=False)
+df_discogem_single_lang_en_train.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_en_train.csv', index=False)
+df_discogem_single_lang_en_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_en_validation.csv', index=False)
+df_discogem_single_lang_en_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_en_test.csv', index=False)
 
 # german
 
@@ -305,10 +305,10 @@ df_discogem_single_lang_de_train = df_discogem_single_lang_de[df_discogem_single
 df_discogem_single_lang_de_validation = df_discogem_single_lang_de[df_discogem_single_lang_de['split'] == 'dev']
 df_discogem_single_lang_de_test = df_discogem_single_lang_de[df_discogem_single_lang_de['split'] == 'test']
 
-df_discogem_single_lang_de.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de.csv', index=False)
-df_discogem_single_lang_de_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_train.csv', index=False)
-df_discogem_single_lang_de_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_validation.csv', index=False)
-df_discogem_single_lang_de_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_de_test.csv', index=False)
+df_discogem_single_lang_de.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_de.csv', index=False)
+df_discogem_single_lang_de_train.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_de_train.csv', index=False)
+df_discogem_single_lang_de_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_de_validation.csv', index=False)
+df_discogem_single_lang_de_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_de_test.csv', index=False)
 
 # french
 
@@ -320,10 +320,10 @@ df_discogem_single_lang_fr_train = df_discogem_single_lang_fr[df_discogem_single
 df_discogem_single_lang_fr_validation = df_discogem_single_lang_fr[df_discogem_single_lang_fr['split'] == 'dev']
 df_discogem_single_lang_fr_test = df_discogem_single_lang_fr[df_discogem_single_lang_fr['split'] == 'test']
 
-df_discogem_single_lang_fr.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr.csv', index=False)
-df_discogem_single_lang_fr_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_train.csv', index=False)
-df_discogem_single_lang_fr_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_validation.csv', index=False)
-df_discogem_single_lang_fr_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_fr_test.csv', index=False)
+df_discogem_single_lang_fr.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_fr.csv', index=False)
+df_discogem_single_lang_fr_train.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_fr_train.csv', index=False)
+df_discogem_single_lang_fr_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_fr_validation.csv', index=False)
+df_discogem_single_lang_fr_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_fr_test.csv', index=False)
 
 # czech
 
@@ -335,10 +335,10 @@ df_discogem_single_lang_cs_train = df_discogem_single_lang_cs[df_discogem_single
 df_discogem_single_lang_cs_validation = df_discogem_single_lang_cs[df_discogem_single_lang_cs['split'] == 'dev']
 df_discogem_single_lang_cs_test = df_discogem_single_lang_cs[df_discogem_single_lang_cs['split'] == 'test']
 
-df_discogem_single_lang_cs.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs.csv', index=False)
-df_discogem_single_lang_cs_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_train.csv', index=False)
-df_discogem_single_lang_cs_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_validation.csv', index=False)
-df_discogem_single_lang_cs_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_cs_test.csv', index=False)
+df_discogem_single_lang_cs.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_cs.csv', index=False)
+df_discogem_single_lang_cs_train.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_train.csv', index=False)
+df_discogem_single_lang_cs_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_validation.csv', index=False)
+df_discogem_single_lang_cs_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_test.csv', index=False)
 
 # all languages
 
@@ -349,9 +349,9 @@ df_discogem_single_lang_all_train = df_discogem_single_lang_all[df_discogem_sing
 df_discogem_single_lang_all_validation = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'dev']
 df_discogem_single_lang_all_test = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'test']
 
-df_discogem_single_lang_all.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all.csv', index=False)
-df_discogem_single_lang_all_train.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_train.csv', index=False)
-df_discogem_single_lang_all_validation.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_validation.csv', index=False)
-df_discogem_single_lang_all_test.to_csv('Data/DiscoGeM-2.0/df_discogem_single_lang_all_test.csv', index=False)
+df_discogem_single_lang_all.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_all.csv', index=False)
+df_discogem_single_lang_all_train.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_all_train.csv', index=False)
+df_discogem_single_lang_all_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_all_validation.csv', index=False)
+df_discogem_single_lang_all_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_all_test.csv', index=False)
 
 print(f'Completed in {(time.time()-start_time)/60:.2f} minutes.')
