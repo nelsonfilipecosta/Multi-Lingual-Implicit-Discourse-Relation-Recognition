@@ -17,8 +17,8 @@ from scipy.spatial.distance import jensenshannon
 EPOCHS = 10
 BATCH_SIZE = 16
 NUMBER_OF_SENSES = {'level_1': 4,
-                    'level_2': 14,
-                    'level_3': 22}
+                    'level_2': 17,
+                    'level_3': 28}
 
 MODEL_NAME = sys.argv[1]
 if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base']:
@@ -45,7 +45,7 @@ if SCHEDULER not in ['linear', 'cosine']:
     print('Type a valid scheduler: linear or cosine.')
     exit()
 
-WANDB = 1 # set 1 for logging and 0 for local runs
+WANDB = 0 # set 1 for logging and 0 for local runs
 
 
 class Multi_IDDR_Dataset(torch.utils.data.Dataset):
@@ -57,9 +57,9 @@ class Multi_IDDR_Dataset(torch.utils.data.Dataset):
     
     def __getitem__(self, idx):
         item = {key: torch.tensor(value[idx]) for key, value in self.encodings.items()}
-        item['labels_level_3'] = torch.tensor(self.labels[idx,0:22], dtype=torch.float32)  # level-3 columns
-        item['labels_level_2'] = torch.tensor(self.labels[idx,22:36], dtype=torch.float32) # level-2 columns
-        item['labels_level_1'] = torch.tensor(self.labels[idx,36:40], dtype=torch.float32) # level-1 columns
+        item['labels_level_1'] = torch.tensor(self.labels[idx,0:4], dtype=torch.float32)   # level-1 columns
+        item['labels_level_2'] = torch.tensor(self.labels[idx,4:21], dtype=torch.float32)  # level-2 columns
+        item['labels_level_3'] = torch.tensor(self.labels[idx,21:49], dtype=torch.float32) # level-3 columns
         return item
 
     def __len__(self):
@@ -134,9 +134,9 @@ def create_dataloader(path):
 
     # prepare text encodings and labels
     encodings = tokenizer(list(df['arg1_arg2']), truncation=True, padding=True)
-    labels = np.hstack((np.array(df.iloc[:,5:27]),   # level-3 columns
-                        np.array(df.iloc[:,29:43]),  # level-2 columns
-                        np.array(df.iloc[:,45:49]))) # level-1 columns
+    labels = np.hstack((np.array(df.iloc[:,7:11]),   # level-1 columns
+                        np.array(df.iloc[:,12:29]),  # level-2 columns
+                        np.array(df.iloc[:,30:58]))) # level-3 columns
 
     # generate datasets
     dataset = Multi_IDDR_Dataset(encodings, labels)
@@ -318,16 +318,16 @@ def test_loop(mode, dataloader, iteration=None):
     if i != None:
         if not os.path.exists('Results'):
             os.makedirs('Results')
-        if not os.path.exists('Results/DiscoGeM_' + str(iteration)):
-            os.makedirs('Results/DiscoGeM_' + str(iteration))
+        if not os.path.exists('Results/DiscoGeM-2.0_' + str(iteration)):
+            os.makedirs('Results/DiscoGeM-2.0_' + str(iteration))
 
     if mode == 'Testing':
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/labels_l1.txt', np.array(labels_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/labels_l2.txt', np.array(labels_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/labels_l3.txt', np.array(labels_l3), delimiter = ',')
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/predictions_l1.txt', np.array(predictions_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/predictions_l2.txt', np.array(predictions_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM_' + str(iteration) + '/predictions_l3.txt', np.array(predictions_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l1.txt', np.array(labels_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l2.txt', np.array(labels_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/labels_l3.txt', np.array(labels_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l1.txt', np.array(predictions_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l2.txt', np.array(predictions_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_' + str(iteration) + '/predictions_l3.txt', np.array(predictions_l3), delimiter = ',')
 
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
@@ -352,9 +352,9 @@ for i in range(3):
                                                      'Optimizer': OPTIMIZER,
                                                      'Learning Rate': LEARNING_RATE})
     
-    train_loader      = create_dataloader('Data/DiscoGeM/discogem_train.csv')
-    validation_loader = create_dataloader('Data/DiscoGeM/discogem_validation.csv')
-    test_loader       = create_dataloader('Data/DiscoGeM/discogem_test.csv')
+    train_loader      = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_train.csv')
+    validation_loader = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_validation.csv')
+    test_loader       = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_cs_test.csv')
 
     model = Multi_IDDR_Classifier(MODEL_NAME, NUMBER_OF_SENSES)
 
