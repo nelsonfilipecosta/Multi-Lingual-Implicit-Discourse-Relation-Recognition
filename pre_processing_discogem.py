@@ -282,6 +282,9 @@ df_discogem_single_lang_cs.columns = single_lang_columns
 
 # english
 
+df_discogem_single_lang_en = df_discogem_single_lang_en.dropna(subset=['arg1_arg2'])
+df_discogem_single_lang_en = df_discogem_single_lang_en[df_discogem_single_lang_en['arg1_arg2'].str.strip() != '']
+
 df_discogem_single_lang_en['majority_level_1'] = df_discogem_single_lang_en['majority_level_1'].str.replace(r'_en$', '', regex=True)
 df_discogem_single_lang_en['majority_level_2'] = df_discogem_single_lang_en['majority_level_2'].str.replace(r'_en$', '', regex=True)
 df_discogem_single_lang_en['majority_level_3'] = df_discogem_single_lang_en['majority_level_3'].str.replace(r'_en$', '', regex=True)
@@ -296,6 +299,9 @@ df_discogem_single_lang_en_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_singl
 df_discogem_single_lang_en_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_en_test.csv', index=False)
 
 # german
+
+df_discogem_single_lang_de = df_discogem_single_lang_de.dropna(subset=['arg1_arg2'])
+df_discogem_single_lang_de = df_discogem_single_lang_de[df_discogem_single_lang_de['arg1_arg2'].str.strip() != '']
 
 df_discogem_single_lang_de['majority_level_1'] = df_discogem_single_lang_de['majority_level_1'].str.replace(r'_de$', '', regex=True)
 df_discogem_single_lang_de['majority_level_2'] = df_discogem_single_lang_de['majority_level_2'].str.replace(r'_de$', '', regex=True)
@@ -312,6 +318,9 @@ df_discogem_single_lang_de_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang
 
 # french
 
+df_discogem_single_lang_fr = df_discogem_single_lang_fr.dropna(subset=['arg1_arg2'])
+df_discogem_single_lang_fr = df_discogem_single_lang_fr[df_discogem_single_lang_fr['arg1_arg2'].str.strip() != '']
+
 df_discogem_single_lang_fr['majority_level_1'] = df_discogem_single_lang_fr['majority_level_1'].str.replace(r'_fr$', '', regex=True)
 df_discogem_single_lang_fr['majority_level_2'] = df_discogem_single_lang_fr['majority_level_2'].str.replace(r'_fr$', '', regex=True)
 df_discogem_single_lang_fr['majority_level_3'] = df_discogem_single_lang_fr['majority_level_3'].str.replace(r'_fr$', '', regex=True)
@@ -326,6 +335,9 @@ df_discogem_single_lang_fr_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_singl
 df_discogem_single_lang_fr_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_fr_test.csv', index=False)
 
 # czech
+
+df_discogem_single_lang_cs = df_discogem_single_lang_cs.dropna(subset=['arg1_arg2'])
+df_discogem_single_lang_cs = df_discogem_single_lang_cs[df_discogem_single_lang_cs['arg1_arg2'].str.strip() != '']
 
 df_discogem_single_lang_cs['majority_level_1'] = df_discogem_single_lang_cs['majority_level_1'].str.replace(r'_cs$', '', regex=True)
 df_discogem_single_lang_cs['majority_level_2'] = df_discogem_single_lang_cs['majority_level_2'].str.replace(r'_cs$', '', regex=True)
@@ -344,6 +356,9 @@ df_discogem_single_lang_cs_test.to_csv('Data/DiscoGeM-2.0/discogem_2_single_lang
 
 df_discogem_single_lang_all = pd.concat([df_discogem_single_lang_en, df_discogem_single_lang_de,
                                          df_discogem_single_lang_fr, df_discogem_single_lang_cs])
+
+df_discogem_single_lang_all = df_discogem_single_lang_all.dropna(subset=['arg1_arg2'])
+df_discogem_single_lang_all = df_discogem_single_lang_all[df_discogem_single_lang_all['arg1_arg2'].str.strip() != '']
 
 df_discogem_single_lang_all_train = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'train']
 df_discogem_single_lang_all_validation = df_discogem_single_lang_all[df_discogem_single_lang_all['split'] == 'dev']
