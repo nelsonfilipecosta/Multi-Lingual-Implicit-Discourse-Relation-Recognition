@@ -21,8 +21,8 @@ NUMBER_OF_SENSES = {'level_1': 4,
                     'level_2': 17,
                     'level_3': 28}
 
-if len(sys.argv) != 8:
-    print('The expected comand should be: python classification_model.py language architecture model loss optimizer learning_rate scheduler')
+if len(sys.argv) != 9:
+    print('The expected comand should be: python classification_model.py language architecture model loss optimizer learning_rate scheduler wandb')
     sys.exit()
 
 LANG = sys.argv[1]
@@ -60,39 +60,24 @@ if SCHEDULER not in ['linear', 'cosine', 'none']:
     print('Type a valid scheduler: linear, cosine or none.')
     exit()
 
-WANDB = 0 # set 1 for logging and 0 for local runs
+WANDB = sys.argv[8]
+if WANDB not in ['true', 'false']:
+    print('Type a valid wandb bool: true or false.')
+    exit()
 
 
-def log_wandb(mode, js_1, f1_score_1, precision_1, recall_1, js_2, f1_score_2, precision_2, recall_2, js_3, f1_score_3, precision_3, recall_3, loss=None):
+def log_wandb(mode, js_1, js_2, js_3, loss=None):
     'Log metrics on Weights & Biases.'
 
     if mode == 'Training':
         wandb.log({mode + ' JS Distance (Level-1)': js_1,
-                   mode + ' F1 Score (Level-1)'   : f1_score_1,
-                   mode + ' Precision (Level-1)'  : precision_1,
-                   mode + ' Recall (Level-1)'     : recall_1,
                    mode + ' JS Distance (Level-2)': js_2,
-                   mode + ' F1 Score (Level-2)'   : f1_score_2,
-                   mode + ' Precision (Level-2)'  : precision_2,
-                   mode + ' Recall (Level-2)'     : recall_2,
                    mode + ' JS Distance (Level-3)': js_3,
-                   mode + ' F1 Score (Level-3)'   : f1_score_3,
-                   mode + ' Precision (Level-3)'  : precision_3,
-                   mode + ' Recall (Level-3)'     : recall_3,
-                   mode + ' Loss'                  : loss})
+                   mode + ' Loss'                 : loss})
     else: 
         wandb.log({mode + ' JS Distance (Level-1)': js_1,
-                   mode + ' F1 Score (Level-1)'   : f1_score_1,
-                   mode + ' Precision (Level-1)'  : precision_1,
-                   mode + ' Recall (Level-1)'     : recall_1,
                    mode + ' JS Distance (Level-2)': js_2,
-                   mode + ' F1 Score (Level-2)'   : f1_score_2,
-                   mode + ' Precision (Level-2)'  : precision_2,
-                   mode + ' Recall (Level-2)'     : recall_2,
-                   mode + ' JS Distance (Level-3)': js_3,
-                   mode + ' F1 Score (Level-3)'   : f1_score_3,
-                   mode + ' Precision (Level-3)'  : precision_3,
-                   mode + ' Recall (Level-3)'     : recall_3})
+                   mode + ' JS Distance (Level-3)': js_3})
 
 
 def create_dataloader(path):
@@ -239,7 +224,7 @@ def train_loop(dataloader, scheduler_bool=False):
             js_2 = get_js_distance('Level-2', batch['labels_level_2'], model_output['classifier_level_2'])
             js_3 = get_js_distance('Level-3', batch['labels_level_3'], model_output['classifier_level_3'])
             
-            if WANDB == 1:
+            if WANDB == 'true':
                 log_wandb('Training', js_1, js_2, js_3, loss)
     
     return model.state_dict()
@@ -301,21 +286,26 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
     js_2 = js_2 / len(dataloader)
     js_3 = js_3 / len(dataloader)
     
-    if WANDB == 1:
+    if WANDB == 'true':
         log_wandb(mode, js_1, js_2, js_3)
 
 
 for i in range(3):
 
-    if WANDB == 1:
+    if WANDB == 'true':
         wandb.login()
-        run = wandb.init(project = 'IDRR', config = {'Model': MODEL_NAME,
-                                                     'Epochs': EPOCHS,
-                                                     'Batch Size': BATCH_SIZE,
-                                                     'Loss': LOSS,
-                                                     'Optimizer': OPTIMIZER,
-                                                     'Learning Rate': LEARNING_RATE})
-    
+        wandb.init(project = 'Multi-IDRR',
+                   name = LANG+'-'+ARCH+'-'+MODEL_NAME+'-'+str(LEARNING_RATE)+'-'+str(i+1),
+                   config = {'Language': LANG,
+                             'Architecture': ARCH,
+                             'Model': MODEL_NAME,
+                             'Epochs': EPOCHS,
+                             'Batch Size': BATCH_SIZE,
+                             'Loss': LOSS,
+                             'Optimizer': OPTIMIZER,
+                             'Learning Rate': LEARNING_RATE,
+                             'Scheduler': SCHEDULER})
+
     train_loader      = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_train.csv')
     validation_loader = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_validation.csv')
     test_loader       = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_test.csv')
