@@ -238,19 +238,9 @@ def train_loop(dataloader, scheduler_bool=False):
             js_1 = get_js_distance('Level-1', batch['labels_level_1'], model_output['classifier_level_1'])
             js_2 = get_js_distance('Level-2', batch['labels_level_2'], model_output['classifier_level_2'])
             js_3 = get_js_distance('Level-3', batch['labels_level_3'], model_output['classifier_level_3'])
-
-            f1_score_1, precision_1, recall_1 = get_single_metrics('Level-1',
-                                                                   torch.argmax(batch['labels_level_1'], dim=1).numpy(),
-                                                                   torch.argmax(model_output['classifier_level_1'], dim=1).numpy())
-            f1_score_2, precision_2, recall_2 = get_single_metrics('Level-2',
-                                                                   torch.argmax(batch['labels_level_2'], dim=1).numpy(),
-                                                                   torch.argmax(model_output['classifier_level_2'], dim=1).numpy())
-            f1_score_3, precision_3, recall_3 = get_single_metrics('Level-3',
-                                                                   torch.argmax(batch['labels_level_3'], dim=1).numpy(),
-                                                                   torch.argmax(model_output['classifier_level_3'], dim=1).numpy())
             
             if WANDB == 1:
-                log_wandb('Training', js_1, f1_score_1, precision_1, recall_1, js_2, f1_score_2, precision_2, recall_2, js_3, f1_score_3, precision_3, recall_3, loss)
+                log_wandb('Training', js_1, js_2, js_3, loss)
     
     return model.state_dict()
 
@@ -310,13 +300,9 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
     js_3 = js_3 / len(dataloader)
-
-    f1_score_1, precision_1, recall_1 = get_single_metrics('Level-1', np.array(labels_l1), np.array(predictions_l1))
-    f1_score_2, precision_2, recall_2 = get_single_metrics('Level-2', np.array(labels_l2), np.array(predictions_l2))
-    f1_score_3, precision_3, recall_3 = get_single_metrics('Level-3', np.array(labels_l3), np.array(predictions_l3))
     
     if WANDB == 1:
-        log_wandb(mode, js_1, f1_score_1, precision_1, recall_1, js_2, f1_score_2, precision_2, recall_2, js_3, f1_score_3, precision_3, recall_3)
+        log_wandb(mode, js_1, js_2, js_3)
 
 
 for i in range(3):
