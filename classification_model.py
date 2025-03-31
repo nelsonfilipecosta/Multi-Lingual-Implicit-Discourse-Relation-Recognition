@@ -272,9 +272,9 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
 
     if mode == 'Testing':
         if scheduler_bool == False:
-            results_path = LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(iteration)+'.txt'
+            results_path = LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.txt'
         else:
-            results_path = LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+ '_'+str(iteration)+'.txt'
+            results_path = LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
         np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
         np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
         np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
@@ -362,9 +362,9 @@ for i in range(3):
         os.makedirs('Models/DiscoGeM-2.0_' + LANG)
 
     if SCHEDULER == 'none':
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
     else:
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+MODEL_NAME+'_'+LOSS+'_'+OPTIMIZER+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
     torch.save(model_dict, model_path)
 
     if SCHEDULER == 'none':
