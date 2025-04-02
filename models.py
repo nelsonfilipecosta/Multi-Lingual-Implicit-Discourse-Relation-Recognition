@@ -1,6 +1,4 @@
 import torch
-import transformers
-from transformers import AutoTokenizer
 from transformers import AutoModel
 
 
@@ -74,6 +72,7 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
         self.alpha_param = torch.nn.Parameter(torch.tensor(0.5))  # initialize at 0.5
         self.beta_1_param = torch.nn.Parameter(torch.tensor(0.25)) # initialize at 0.25
         self.beta_2_param = torch.nn.Parameter(torch.tensor(0.25)) # initialize at 0.25
+        self.beta_3_param = torch.nn.Parameter(torch.tensor(0.5)) # initialize at 0.5
 
     def forward(self, input_ids, attention_mask):
         llm_states = self.pretrained_model(input_ids=input_ids, attention_mask=attention_mask)
@@ -94,7 +93,7 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
         # increase dimensions to match the intermediate output
         increased_output_2 = torch.relu(self.increase_dimensions_2(output_2)) # ReLU helps stabilizing learning when projecting from small to high dimensions
         # weighted sum of inputs for level-3 classifier
-        beta_1, beta_2, beta_3 = torch.softmax(torch.stack([self.beta_1_param, self.beta_2_param, torch.tensor(0.5)]), dim=0) # the softmax ensures the sum of the betas is in [0,1]
+        beta_1, beta_2, beta_3 = torch.softmax(torch.stack([self.beta_1_param, self.beta_2_param, self.beta_3_param]), dim=0) # the softmax ensures the sum of the betas is in [0,1]
         combined_input_3 = beta_1 * increased_output_1 + beta_2 * increased_output_2 + beta_3 * intermediate_output
         # level-3 classifier
         output_3 = self.classifier_level_3(combined_input_3)
