@@ -7,7 +7,6 @@ import numpy as np
 import torch
 import transformers
 from transformers import AutoTokenizer
-from transformers import AutoModel
 from sklearn import metrics
 from sklearn.preprocessing import normalize
 from scipy.stats import entropy
@@ -31,13 +30,13 @@ if LANG not in ['all', 'en', 'de', 'fr', 'cs']:
     exit()
 
 ARCH = sys.argv[2]
-if ARCH not in ['concat', 'wsum', 'wsum_red', 'wsum_ind']:
-    print('Type a valid architecture: concat, wsum, wsum_red or wsum_ind.')
+if ARCH not in ['original', 'concat', 'wsum', 'wsum_red', 'wsum_ind']:
+    print('Type a valid architecture: original, concat, wsum, wsum_red or wsum_ind.')
     exit()
 
 MODEL_NAME = sys.argv[3]
-if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base']:
-    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base or distilroberta-base.')
+if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base']:
+    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base or xlm-roberta-base.')
     exit()
 
 LOSS = sys.argv[4]
@@ -310,7 +309,9 @@ for i in range(3):
     validation_loader = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_validation.csv')
     test_loader       = create_dataloader('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_test.csv')
 
-    if ARCH == 'concat':
+    if ARCH == 'original':
+        model = Multi_IDDR_Classifier(MODEL_NAME, NUMBER_OF_SENSES)
+    elif ARCH == 'concat':
         model = Multi_IDDR_Classifier_Concat(MODEL_NAME, NUMBER_OF_SENSES)
     elif ARCH == 'wsum':
         model = Multi_IDDR_Classifier_WSum(MODEL_NAME, NUMBER_OF_SENSES)
