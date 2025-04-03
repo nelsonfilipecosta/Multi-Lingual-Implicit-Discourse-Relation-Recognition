@@ -58,17 +58,24 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
     def __init__(self, model_name, number_of_senses):
         super().__init__()
         self.pretrained_model   = AutoModel.from_pretrained(model_name)
+        hidden_dimension        = self.pretrained_model.config.hidden_size
         # common layers
-        self.hidden             = torch.nn.Linear(self.pretrained_model.config.hidden_size, self.pretrained_model.config.hidden_size)
+        self.hidden             = torch.nn.Linear(hidden_dimension, hidden_dimension)
         self.dropout            = torch.nn.Dropout(p=0.5)
         # linear layers to increase the dimensions of output_1 and output_2
-        self.increase_dimensions_1  = torch.nn.Linear(number_of_senses['level_1'], self.pretrained_model.config.hidden_size)
-        self.increase_dimensions_2  = torch.nn.Linear(number_of_senses['level_2'], self.pretrained_model.config.hidden_size)
-        # classification head for each level
-        self.classifier_level_1 = torch.nn.Linear(self.pretrained_model.config.hidden_size, number_of_senses['level_1'])
-        self.classifier_level_2 = torch.nn.Linear(self.pretrained_model.config.hidden_size, number_of_senses['level_2'])
-        self.classifier_level_3 = torch.nn.Linear(self.pretrained_model.config.hidden_size, number_of_senses['level_3'])
-        # learnable weight parameters for the weighted sum
+        self.increase_dimensions_1 = torch.nn.Sequential(torch.nn.Linear(number_of_senses['level_1'], hidden_dimension//2), # middle step to increase dimensions
+                                                         torch.nn.ReLU(),                                                   # ReLU helps stabilizing learning
+                                                         torch.nn.Linear(hidden_dimension//2, hidden_dimension),            # when projecting from small to high dimensions
+                                                         torch.nn.ReLU())
+        self.increase_dimensions_2 = torch.nn.Sequential(torch.nn.Linear(number_of_senses['level_2'], hidden_dimension//2), # middle step to increase dimensions
+                                                         torch.nn.ReLU(),                                                   # ReLU helps stabilizing learning
+                                                         torch.nn.Linear(hidden_dimension//2, hidden_dimension),            # when projecting from small to high dimensions
+                                                         torch.nn.ReLU())
+        # classification layers for each level
+        self.classifier_level_1 = torch.nn.Linear(hidden_dimension, number_of_senses['level_1'])
+        self.classifier_level_2 = torch.nn.Linear(hidden_dimension, number_of_senses['level_2'])
+        self.classifier_level_3 = torch.nn.Linear(hidden_dimension, number_of_senses['level_3'])
+        # learnable weight parameters for the weighted sums
         self.alpha_param = torch.nn.Parameter(torch.tensor(0.5))  # initialize at 0.5
         self.beta_1_param = torch.nn.Parameter(torch.tensor(0.25)) # initialize at 0.25
         self.beta_2_param = torch.nn.Parameter(torch.tensor(0.25)) # initialize at 0.25
@@ -84,16 +91,16 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
         # level-1 classifier
         output_1 = self.classifier_level_1(intermediate_output)
         # increase dimensions to match the intermediate output
-        increased_output_1 = torch.relu(self.increase_dimensions_1(output_1)) # ReLU helps stabilizing learning when projecting from small to high dimensions
+        increased_output_1 = self.increase_dimensions_1(output_1)
         # weighted sum of inputs for level-2 classifier
-        alpha = torch.sigmoid(self.alpha_param) # contribution of output_1
+        alpha = torch.sigmoid(self.alpha_param)
         combined_input_2 = alpha * increased_output_1 + (1 - alpha) * intermediate_output
         # level-2 classifier
         output_2 = self.classifier_level_2(combined_input_2)
         # increase dimensions to match the intermediate output
-        increased_output_2 = torch.relu(self.increase_dimensions_2(output_2)) # ReLU helps stabilizing learning when projecting from small to high dimensions
+        increased_output_2 = self.increase_dimensions_2(output_2)
         # weighted sum of inputs for level-3 classifier
-        beta_1, beta_2, beta_3 = torch.softmax(torch.stack([self.beta_1_param, self.beta_2_param, self.beta_3_param]), dim=0) # the softmax ensures the sum of the betas is in [0,1]
+        beta_1, beta_2, beta_3 = torch.softmax(torch.stack([self.beta_1_param, self.beta_2_param, self.beta_3_param]), dim=0)
         combined_input_3 = beta_1 * increased_output_1 + beta_2 * increased_output_2 + beta_3 * intermediate_output
         # level-3 classifier
         output_3 = self.classifier_level_3(combined_input_3)
