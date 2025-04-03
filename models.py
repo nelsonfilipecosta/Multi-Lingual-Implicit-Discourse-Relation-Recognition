@@ -64,13 +64,13 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
         self.dropout            = torch.nn.Dropout(p=0.5)
         # linear layers to increase the dimensions of output_1 and output_2
         self.increase_dimensions_1 = torch.nn.Sequential(torch.nn.Linear(number_of_senses['level_1'], hidden_dimension//2), # middle step to increase dimensions
-                                                         torch.nn.ReLU(),                                                   # ReLU helps stabilizing learning
+                                                         torch.nn.GELU(),                                                   # GELU helps stabilizing learning
                                                          torch.nn.Linear(hidden_dimension//2, hidden_dimension),            # when projecting from small to high dimensions
-                                                         torch.nn.ReLU())
+                                                         torch.nn.GELU())
         self.increase_dimensions_2 = torch.nn.Sequential(torch.nn.Linear(number_of_senses['level_2'], hidden_dimension//2), # middle step to increase dimensions
-                                                         torch.nn.ReLU(),                                                   # ReLU helps stabilizing learning
+                                                         torch.nn.GELU(),                                                   # GELU helps stabilizing learning
                                                          torch.nn.Linear(hidden_dimension//2, hidden_dimension),            # when projecting from small to high dimensions
-                                                         torch.nn.ReLU())
+                                                         torch.nn.GELU())
         # classification layers for each level
         self.classifier_level_1 = torch.nn.Linear(hidden_dimension, number_of_senses['level_1'])
         self.classifier_level_2 = torch.nn.Linear(hidden_dimension, number_of_senses['level_2'])
