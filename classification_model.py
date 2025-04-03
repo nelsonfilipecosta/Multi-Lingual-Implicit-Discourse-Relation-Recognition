@@ -35,8 +35,8 @@ if ARCH not in ['original', 'concat', 'wsum', 'wsum_red', 'wsum_ind']:
     exit()
 
 MODEL_NAME = sys.argv[3]
-if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base']:
-    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base or xlm-roberta-base.')
+if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base', 'flan-t5-base']:
+    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base, xlm-roberta-base or flan-t5-base.')
     exit()
 
 LOSS = sys.argv[4]
@@ -266,20 +266,20 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
     if i != None:
         if not os.path.exists('Results'):
             os.makedirs('Results')
-        if not os.path.exists('Results/DiscoGeM-2.0_' + LANG):
-            os.makedirs('Results/DiscoGeM-2.0_' + LANG)
+        if not os.path.exists('Results/DiscoGeM-2.0_'+LANG):
+            os.makedirs('Results/DiscoGeM-2.0_'+LANG)
 
     if mode == 'Testing':
         if scheduler_bool == False:
-            results_path = LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.txt'
+            results_path = ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.txt'
         else:
-            results_path = LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l1_' + results_path, np.array(predictions_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l2_' + results_path, np.array(predictions_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_' + LANG + '/predictions_l3_' + results_path, np.array(predictions_l3), delimiter = ',')
+            results_path = ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/predictions_l1_' + results_path, np.array(predictions_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/predictions_l2_' + results_path, np.array(predictions_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/predictions_l3_' + results_path, np.array(predictions_l3), delimiter = ',')
 
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
@@ -359,13 +359,13 @@ for i in range(3):
     # save model configuration
     if not os.path.exists('Models'):
         os.makedirs('Models')
-    if not os.path.exists('Models/DiscoGeM-2.0_' + LANG):
-        os.makedirs('Models/DiscoGeM-2.0_' + LANG)
+    if not os.path.exists('Models/DiscoGeM-2.0_'+LANG):
+        os.makedirs('Models/DiscoGeM-2.0_'+LANG)
 
     if SCHEDULER == 'none':
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
     else:
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'_'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
     torch.save(model_dict, model_path)
 
     if SCHEDULER == 'none':
