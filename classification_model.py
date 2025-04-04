@@ -35,8 +35,8 @@ if ARCH not in ['original', 'concat', 'wsum']:
     exit()
 
 MODEL_NAME = sys.argv[3]
-if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base', 'google/flan-t5-base']:
-    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base, xlm-roberta-base or google/flan-t5-base.')
+if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base', 'google/flan-t5-base', 'EuroBERT/EuroBERT-210m']:
+    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base, xlm-roberta-base, google/flan-t5-base or EuroBERT/EuroBERT-210m.')
     exit()
 
 LOSS = sys.argv[4]
