@@ -84,7 +84,10 @@ class Multi_IDDR_Classifier_WSum(torch.nn.Module):
 
     def __init__(self, model_name, number_of_senses):
         super().__init__()
-        self.pretrained_model   = AutoModel.from_pretrained(model_name)
+        if model_name == 'EuroBERT/EuroBERT-210m':
+            self.pretrained_model   = AutoModel.from_pretrained(model_name, trust_remote_code=True)
+        else:
+            self.pretrained_model   = AutoModel.from_pretrained(model_name)
         hidden_dimension        = self.pretrained_model.config.hidden_size
         # common layers
         self.hidden             = torch.nn.Linear(hidden_dimension, hidden_dimension)
