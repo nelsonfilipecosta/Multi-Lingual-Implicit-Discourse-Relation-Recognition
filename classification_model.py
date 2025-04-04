@@ -30,13 +30,13 @@ if LANG not in ['all', 'en', 'de', 'fr', 'cs']:
     exit()
 
 ARCH = sys.argv[2]
-if ARCH not in ['original', 'concat', 'wsum', 'wsum_red', 'wsum_ind']:
-    print('Type a valid architecture: original, concat, wsum, wsum_red or wsum_ind.')
+if ARCH not in ['original', 'concat', 'wsum']:
+    print('Type a valid architecture: original, concat or wsum.')
     exit()
 
 MODEL_NAME = sys.argv[3]
-if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base', 'flan-t5-base']:
-    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base, xlm-roberta-base or flan-t5-base.')
+if MODEL_NAME not in ['bert-base-uncased', 'distilbert-base-uncased', 'roberta-base', 'distilroberta-base', 'xlm-roberta-base', 'google/flan-t5-base']:
+    print('Type a valid model name: bert-base-uncased, distilbert-base-uncased, roberta-base, distilroberta-base, xlm-roberta-base or google/flan-t5-base.')
     exit()
 
 LOSS = sys.argv[4]
@@ -313,12 +313,10 @@ for i in range(3):
         model = Multi_IDDR_Classifier(MODEL_NAME, NUMBER_OF_SENSES)
     elif ARCH == 'concat':
         model = Multi_IDDR_Classifier_Concat(MODEL_NAME, NUMBER_OF_SENSES)
-    elif ARCH == 'wsum':
+    elif ARCH == 'wsum' and MODEL_NAME != 'google/flan-t5-base':
         model = Multi_IDDR_Classifier_WSum(MODEL_NAME, NUMBER_OF_SENSES)
-    elif ARCH == 'wsum_red':
-        model = Multi_IDDR_Classifier_WSum_Reduced_Dim(MODEL_NAME, NUMBER_OF_SENSES)
     else:
-        model = Multi_IDDR_Classifier_WSum_Independent(MODEL_NAME, NUMBER_OF_SENSES)
+        model = Multi_IDDR_Classifier_WSum_T5(MODEL_NAME, NUMBER_OF_SENSES)
 
     # choose loss
     if LOSS == 'cross-entropy':
