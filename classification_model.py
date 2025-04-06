@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import wandb
@@ -360,10 +361,12 @@ for i in range(3):
     if not os.path.exists('Models/DiscoGeM-2.0_'+LANG):
         os.makedirs('Models/DiscoGeM-2.0_'+LANG)
 
+    after_slash_model_name = re.search(r'(?<=/).*', MODEL_NAME).group()
+
     if SCHEDULER == 'none':
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
     else:
-        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
+        model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.pth'
     torch.save(model_dict, model_path)
 
     if SCHEDULER == 'none':
