@@ -270,11 +270,13 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
         if not os.path.exists('Results/DiscoGeM-2.0_'+LANG):
             os.makedirs('Results/DiscoGeM-2.0_'+LANG)
 
+    after_slash_model_name = re.search(r'(?<=/).*', MODEL_NAME).group()
+
     if mode == 'Testing':
         if scheduler_bool == False:
-            results_path = ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.txt'
+            results_path = ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.txt'
         else:
-            results_path = ARCH+'_'+MODEL_NAME+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
+            results_path = ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
         np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
         np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
         np.savetxt('Results/DiscoGeM-2.0_'+LANG+'/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
