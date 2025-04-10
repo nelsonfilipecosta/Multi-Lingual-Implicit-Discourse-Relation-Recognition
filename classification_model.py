@@ -270,7 +270,7 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
         if not os.path.exists('Results/DiscoGeM-2.0_'+LANG):
             os.makedirs('Results/DiscoGeM-2.0_'+LANG)
 
-    after_slash_model_name = re.search(r'(?<=/).*', MODEL_NAME).group()
+    after_slash_model_name = re.search(r'[^/]+$', MODEL_NAME).group()
 
     if mode == 'Testing':
         if scheduler_bool == False:
@@ -363,7 +363,7 @@ for i in range(3):
     if not os.path.exists('Models/DiscoGeM-2.0_'+LANG):
         os.makedirs('Models/DiscoGeM-2.0_'+LANG)
 
-    after_slash_model_name = re.search(r'(?<=/).*', MODEL_NAME).group()
+    after_slash_model_name = re.search(r'[^/]+$', MODEL_NAME).group()
 
     if SCHEDULER == 'none':
         model_path = 'Models/DiscoGeM-2.0_'+LANG+'/'+ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+str(i+1)+'.pth'
