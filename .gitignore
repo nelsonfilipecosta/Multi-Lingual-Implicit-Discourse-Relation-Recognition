@@ -2,7 +2,7 @@
 **/.DS_Store
 Corpora/*
 Data/*
-Model/*
+Models/*
 Results/*
 wandb/*
 
