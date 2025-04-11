@@ -191,11 +191,11 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
         else:
             results_path = ARCH+'_'+after_slash_model_name+'_'+str(LEARNING_RATE)+'_'+SCHEDULER+'_'+str(i+1)+'.txt'
         np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_labels_l1_' + results_path, np.array(labels_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'/labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'/labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'/predictions_l1_' + results_path, np.array(predictions_l1), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'/predictions_l2_' + results_path, np.array(predictions_l2), delimiter = ',')
-        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'/predictions_l3_' + results_path, np.array(predictions_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_labels_l2_' + results_path, np.array(labels_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_labels_l3_' + results_path, np.array(labels_l3), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_predictions_l1_' + results_path, np.array(predictions_l1), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_predictions_l2_' + results_path, np.array(predictions_l2), delimiter = ',')
+        np.savetxt('Results/DiscoGeM-2.0_'+TRAIN_LANG+'/'+TEST_LANG+'_predictions_l3_' + results_path, np.array(predictions_l3), delimiter = ',')
 
     js_1 = js_1 / len(dataloader)
     js_2 = js_2 / len(dataloader)
