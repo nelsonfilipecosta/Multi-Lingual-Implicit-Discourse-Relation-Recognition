@@ -211,8 +211,8 @@ df_discogem_train.to_csv('Data/DiscoGeM-2.0/discogem_2_train.csv', index=False)
 df_discogem_validation.to_csv('Data/DiscoGeM-2.0/discogem_2_validation.csv', index=False)
 df_discogem_test.to_csv('Data/DiscoGeM-2.0/discogem_2_test.csv', index=False)
 
-en_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_en', 'majority_level_1_en', 'temporal_en', 'contingency_en',
-              'comparison_en', 'expansion_en', 'majority_level_2_en', 'synchronous_en', 'asynchronous_en', 'cause_en', 'condition_en',
+en_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_en', 'arg2_en', 'arg1_arg2_en', 'majority_level_1_en', 'temporal_en',
+              'contingency_en', 'comparison_en', 'expansion_en', 'majority_level_2_en', 'synchronous_en', 'asynchronous_en', 'cause_en', 'condition_en',
               'neg-condition_en', 'purpose_en', 'concession_en', 'contrast_en', 'similarity_en', 'conjunction_en', 'disjunction_en',
               'equivalence_en', 'exception_en', 'instantiation_en', 'level-of-detail_en', 'manner_en', 'substitution_en', 'majority_level_3_en',
               'synchronous_3_en', 'precedence_en', 'succession_en', 'reason_en', 'result_en', 'arg1-as-cond_en', 'arg2-as-cond_en',
@@ -221,8 +221,8 @@ en_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_en',
               'arg1-as-instance_en', 'arg2-as-instance_en', 'arg1-as-detail_en', 'arg2-as-detail_en', 'arg1-as-manner_en', 'arg2-as-manner_en',
               'arg1-as-subst_en', 'arg2-as-subst_en']
 
-de_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_de', 'majority_level_1_de', 'temporal_de', 'contingency_de',
-              'comparison_de', 'expansion_de', 'majority_level_2_de', 'synchronous_de', 'asynchronous_de', 'cause_de', 'condition_de',
+de_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_de', 'arg2_de', 'arg1_arg2_de', 'majority_level_1_de', 'temporal_de',
+              'contingency_de', 'comparison_de', 'expansion_de', 'majority_level_2_de', 'synchronous_de', 'asynchronous_de', 'cause_de', 'condition_de',
               'neg-condition_de', 'purpose_de', 'concession_de', 'contrast_de', 'similarity_de', 'conjunction_de', 'disjunction_de',
               'equivalence_de', 'exception_de', 'instantiation_de', 'level-of-detail_de', 'manner_de', 'substitution_de', 'majority_level_3_de',
               'synchronous_3_de', 'precedence_de', 'succession_de', 'reason_de', 'result_de', 'arg1-as-cond_de', 'arg2-as-cond_de',
@@ -231,8 +231,8 @@ de_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_de',
               'arg1-as-instance_de', 'arg2-as-instance_de', 'arg1-as-detail_de', 'arg2-as-detail_de', 'arg1-as-manner_de', 'arg2-as-manner_de',
               'arg1-as-subst_de', 'arg2-as-subst_de']
 
-fr_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_fr', 'majority_level_1_fr', 'temporal_fr', 'contingency_fr',
-              'comparison_fr', 'expansion_fr', 'majority_level_2_fr', 'synchronous_fr', 'asynchronous_fr', 'cause_fr', 'condition_fr',
+fr_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_fr', 'arg2_fr', 'arg1_arg2_fr', 'majority_level_1_fr', 'temporal_fr',
+              'contingency_fr', 'comparison_fr', 'expansion_fr', 'majority_level_2_fr', 'synchronous_fr', 'asynchronous_fr', 'cause_fr', 'condition_fr',
               'neg-condition_fr', 'purpose_fr', 'concession_fr', 'contrast_fr', 'similarity_fr', 'conjunction_fr', 'disjunction_fr',
               'equivalence_fr', 'exception_fr', 'instantiation_fr', 'level-of-detail_fr', 'manner_fr', 'substitution_fr', 'majority_level_3_fr',
               'synchronous_3_fr', 'precedence_fr', 'succession_fr', 'reason_fr', 'result_fr', 'arg1-as-cond_fr', 'arg2-as-cond_fr',
@@ -241,8 +241,8 @@ fr_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_fr',
               'arg1-as-instance_fr', 'arg2-as-instance_fr', 'arg1-as-detail_fr', 'arg2-as-detail_fr', 'arg1-as-manner_fr', 'arg2-as-manner_fr',
               'arg1-as-subst_fr', 'arg2-as-subst_fr']
 
-cs_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_arg2_cs', 'majority_level_1_cs', 'temporal_cs', 'contingency_cs',
-              'comparison_cs', 'expansion_cs', 'majority_level_2_cs', 'synchronous_cs', 'asynchronous_cs', 'cause_cs', 'condition_cs',
+cs_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'arg1_cs', 'arg2_cs', 'arg1_arg2_cs', 'majority_level_1_cs', 'temporal_cs',
+              'contingency_cs', 'comparison_cs', 'expansion_cs', 'majority_level_2_cs', 'synchronous_cs', 'asynchronous_cs', 'cause_cs', 'condition_cs',
               'neg-condition_cs', 'purpose_cs', 'concession_cs', 'contrast_cs', 'similarity_cs', 'conjunction_cs', 'disjunction_cs',
               'equivalence_cs', 'exception_cs', 'instantiation_cs', 'level-of-detail_cs', 'manner_cs', 'substitution_cs', 'majority_level_3_cs',
               'synchronous_3_cs', 'precedence_cs', 'succession_cs', 'reason_cs', 'result_cs', 'arg1-as-cond_cs', 'arg2-as-cond_cs',
@@ -265,7 +265,7 @@ df_discogem_single_lang_de.insert(4, 'inst_lang', 'de')
 df_discogem_single_lang_fr.insert(4, 'inst_lang', 'fr')
 df_discogem_single_lang_cs.insert(4, 'inst_lang', 'cs')
 
-single_lang_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'inst_lang', 'arg1_arg2', 'majority_level_1',
+single_lang_columns = ['split', 'itemid', 'orig_lang', 'available_langs', 'inst_lang', 'arg1', 'arg2', 'arg1_arg2', 'majority_level_1',
                        'temporal', 'contingency', 'comparison', 'expansion', 'majority_level_2', 'synchronous', 'asynchronous',
                        'cause', 'condition', 'neg-condition', 'purpose', 'concession', 'contrast', 'similarity', 'conjunction',
                        'disjunction', 'equivalence', 'exception', 'instantiation', 'level-of-detail', 'manner', 'substitution',
