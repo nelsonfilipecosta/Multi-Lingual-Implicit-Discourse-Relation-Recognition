@@ -92,9 +92,9 @@ def create_dataloader(path):
 
     # prepare text encodings and labels
     encodings = tokenizer(list(df['arg1_arg2']), truncation=True, padding=True)
-    labels = np.hstack((np.array(df.iloc[:,7:11]),   # level-1 columns
-                        np.array(df.iloc[:,12:29]),  # level-2 columns
-                        np.array(df.iloc[:,30:58]))) # level-3 columns
+    labels = np.hstack((np.array(df.iloc[:,9:13]),   # level-1 columns
+                        np.array(df.iloc[:,14:31]),  # level-2 columns
+                        np.array(df.iloc[:,32:60]))) # level-3 columns
 
     # generate datasets
     dataset = Multi_IDDR_Dataset(encodings, labels)
