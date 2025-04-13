@@ -1,44 +1,78 @@
+import os
 import sys
 import pandas as pd
+import openai
 
 
 MODE = sys.argv[1]
-if MODE not in ['validation', 'test']:
-    print('Type a valid mode: validation or test.')
+if MODE not in ["validation", "test"]:
+    print("Type a valid mode: validation or test.")
     exit()
 
 LANG = sys.argv[2]
-if LANG not in ['all', 'en', 'de', 'fr', 'cs']:
-    print('Type a valid language: all, en, de, fr or cs.')
+if LANG not in ["all", "en", "de", "fr", "cs"]:
+    print("Type a valid language: all, en, de, fr or cs.")
     exit()
 
-
-ENG_CONNECTORS = ['at the same time', 'then', 'after', 'because', 'as a result', 'in that case', 'if', 'if not', 'unless',
-                  'for that purpose', 'so that', 'even though', 'nonetheless', 'on the other hand', 'similarly', 'also',
-                  'or', 'in other words', 'other than that', 'an exception is that', 'this illustrates that', 'for example',
-                  'in short', 'in more detail', 'thereby', 'as if', 'rather than', 'instead']
-
-GER_CONNECTORS = ['gleichzeitig', 'dann', 'davor,', 'weil', 'daher', 'insofern', 'wenn', 'sonst', 'es sei denn', 'dazu',
-                  'sodass', 'obwohl', 'trotzdem', 'andererseits', 'gleichermaßen', 'darüberhinaus', 'oder', 'anders gesagt',
-                  'abgesehen von dieser Ausnahme', 'eine Ausnahme ist, dass', 'das verdeutlicht, dass', 'zum Beispiel',
-                  'um es kurz zu machen', 'genauer gesagt', 'hiermit', 'mittels', 'anstatt, dass', 'stattdessen']
-
-FRE_CONNECTORS = ['en même temps', 'ensuite', 'après que', 'parce que', "c'est pourquoi", "dans ce cas", "si", "sinon",
-                  "à moins que", "à cette fin", "afin que", "bien que", "néanmoins", "d'autre part", "de même", "en plus",
-                  "ou", "en d'autres termes", "à part ça", "une exception est que", "cela illustre que", "par exemple",
-                  "bref", "plus précisement", "de cette manière", "comme si", "plutôt que", "au lieu de"]
-
-CZE_CONNECTORS = ["zároveň", "potom", "předtím", "protože", "prozo", "v tom případě", "pokud", "jinak", "ledaže",
-                  "za tím účelem", "aby", "a to i přesto, že", "přesto", "na druhou stranu", "podobně", "také", "nebo",
-                  "jinými slovy", "kromě této výjimky", "výjimkou je to, že", "to je příkladem toho, že", "například",
-                  "zkrátka", "konkrétně", "tímto způsobem", "následujícím způsobem", "místo, aby", "místo toho"]
+EXAMPLES_NUMBER = 5
 
 
-if MODE == 'validation':
-    df = pd.read_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_validation.csv')
-elif MODE == 'test':
-    df = pd.read_csv('Data/DiscoGeM-2.0/discogem_2_single_lang_' + LANG + '_test.csv')
+openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI()
 
-arg_1 = df['arg1'].tolist()
-arg_2 = df['arg2'].tolist()
+
+def create_prompt(main_prompt, main_response, examples_number=0):
+    messages = [{"role": "user",      "content": main_prompt},
+                {"role": "assistant", "content": main_response}]
+    if examples_number > 0:
+        for i in range(examples_number):
+            messages.append({"role": "user",      "content": examples["question"][i]})
+            messages.append({"role": "assistant", "content": examples["answer"][i]})
+
+    return messages
+
+def create_question(arg_1, arg_2):
+    question = f"Sentence 1: {arg_1}\n"\
+               f"Sentence 2: {arg_2}"
+    
+    return question
+
+def prompt_llm(model, messages):
+    response = client.chat.completions.create(model=model,
+                                              messages = messages,
+                                              temperature=0,
+                                              max_tokens=1024)
+    
+    return response.choices[0].message.content
+
+
+if MODE == "validation":
+    df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_validation.csv")
+elif MODE == "test":
+    df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_test.csv")
+
+prompt_path = "Prompts/main_prompt_" + LANG + ".txt"
+response_path = "Prompts/main_response_" + LANG + ".txt"
+
+arg_1 = df["arg1"].tolist()
+arg_2 = df["arg2"].tolist()
 labels = df.iloc[:,32:60].values.tolist()
+
+if LANG == "en":
+    from Prompts.examples import examples_en as examples
+
+for i in range(3):
+    main_prompt = open(prompt_path).read()
+    main_response=  open(response_path).read()
+    question = create_question(arg_1[i], arg_2[i])
+
+    messages = create_prompt(main_prompt, main_response, EXAMPLES_NUMBER)
+    messages.append({"role": "user", "content": question})
+    print()
+    print(messages)
+    print()
+
+    response = prompt_llm("gpt-4o-mini", messages)
+
+    print(response)
+    print()
