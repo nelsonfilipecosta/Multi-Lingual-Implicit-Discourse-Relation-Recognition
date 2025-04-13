@@ -1,7 +1,9 @@
 import os
 import sys
+import ast
 import pandas as pd
 import openai
+from scipy.spatial.distance import jensenshannon
 
 
 MODE = sys.argv[1]
@@ -49,6 +51,18 @@ def prompt_llm(model, messages):
     return response.choices[0].message.content
 
 
+def get_js_distance(response, labels):
+    shifted_labels = [x + 0.001 for x in labels]
+    shifted_predictions = [x + 0.001 for x in response]
+
+    print(shifted_labels)
+    print(shifted_predictions)
+
+    js_distance = jensenshannon(shifted_labels, shifted_predictions, base=2)
+
+    return js_distance
+
+
 if __name__ == "__main__":
 
     if MODE == "validation":
@@ -73,11 +87,8 @@ if __name__ == "__main__":
 
         messages = create_prompt(main_prompt, main_response, EXAMPLES_NUMBER)
         messages.append({"role": "user", "content": question})
-        print()
-        print(messages)
-        print()
 
         response = prompt_llm("gpt-4o-mini", messages)
+        predictions_l3 = ast.literal_eval(response)
 
-        print(response)
-        print()
+        print(get_js_distance(predictions_l3, labels[i]))
