@@ -17,17 +17,23 @@ if LANG not in ["all", "en", "de", "fr", "cs"]:
     print("Type a valid language: all, en, de, fr or cs.")
     exit()
 
-MODEL_NAME = "gpt-4o-2024-11-20"
+LLM = sys.argv[3]
+if LLM not in ["gpt", "llama", "gemini"]:
+    print("Type a valid LLM: gpt, llama or gemini.")
+    exit()
 
-EXAMPLES_NUMBER = 5
+EXAMPLES_NUMBER = int(sys.argv[4])
+if EXAMPLES_NUMBER not in [0, 1, 2, 3, 4, 5]:
+    print("Type a valid number of examples between 0 and 5.")
+    exit()
 
-WANDB = "true"
+WANDB = sys.argv[5]
+if WANDB not in ['true', 'false']:
+    print('Type a valid wandb bool: true or false.')
+    exit()
 
 
-client = openai.OpenAI()
-
-
-def create_prompt(main_prompt, main_response, examples_number=0):
+def create_prompt(main_prompt, main_response, examples, examples_number=0):
     messages = [{"role": "user",      "content": main_prompt},
                 {"role": "assistant", "content": main_response}]
 
@@ -46,7 +52,7 @@ def create_question(arg_1, arg_2):
     return question
 
 
-def prompt_llm(model, messages):
+def prompt_gpt(model, messages):
     response = client.chat.completions.create(model = model,
                                               messages = messages,
                                               temperature = 0,
@@ -99,6 +105,10 @@ def get_js_distance(response, labels):
 
 if __name__ == "__main__":
 
+    if LLM == "gpt":
+        client = openai.OpenAI()
+        MODEL_NAME = "gpt-4o-2024-11-20"
+
     for i in range(3):
 
         if WANDB == "true":
@@ -138,10 +148,11 @@ if __name__ == "__main__":
             main_response=  open(response_path).read()
             question = create_question(arg_1[j], arg_2[j])
 
-            messages = create_prompt(main_prompt, main_response, EXAMPLES_NUMBER)
+            messages = create_prompt(main_prompt, main_response, examples, EXAMPLES_NUMBER)
             messages.append({"role": "user", "content": question})
 
-            response = prompt_llm(MODEL_NAME, messages)
+            if LLM == "gpt":
+                response = prompt_gpt(MODEL_NAME, messages)
 
             predictions_l3 = ast.literal_eval(response)
             predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
