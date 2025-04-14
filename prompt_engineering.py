@@ -24,7 +24,6 @@ EXAMPLES_NUMBER = 5
 WANDB = "true"
 
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI()
 
 
@@ -160,5 +159,5 @@ if __name__ == "__main__":
         print("Level-3: ", js_distance_l3)
 
         wandb.log({"JS Distance (Level-1)": js_distance_l1,
-                "JS Distance (Level-2)": js_distance_l2,
-                "JS Distance (Level-3)": js_distance_l3})
+                   "JS Distance (Level-2)": js_distance_l2,
+                   "JS Distance (Level-3)": js_distance_l3})
