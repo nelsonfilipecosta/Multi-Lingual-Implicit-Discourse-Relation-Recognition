@@ -137,10 +137,16 @@ def get_lower_level_predictions(predictions_l3):
 
 
 def get_js_distance(response, labels):
+    # avoid zeros
     shifted_labels = [x + 0.001 for x in labels]
     shifted_predictions = [x + 0.001 for x in response]
+    # normalize distributions
+    total_predictions = sum(shifted_predictions)
+    total_labels = sum(shifted_labels)
+    normalized_labels = [x / total_labels for x in shifted_labels]
+    normalized_predictions = [x / total_predictions for x in shifted_predictions]
 
-    js_distance = jensenshannon(shifted_labels, shifted_predictions, base=2)
+    js_distance = jensenshannon(normalized_labels, normalized_predictions, base=2)
 
     return js_distance
 
