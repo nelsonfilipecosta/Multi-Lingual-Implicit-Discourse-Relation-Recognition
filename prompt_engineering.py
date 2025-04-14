@@ -155,15 +155,15 @@ if __name__ == "__main__":
         client = together.Together()
         MODEL_NAME = "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
 
-    if WANDB == "true":
-        wandb.login()
-        wandb.init(project = "Multi-IDRR-LLM",
-                name = MODEL_NAME+"-"+str(i+1),
-                config = {"Language": LANG,
-                            "Mode": MODE,
-                            "Model": MODEL_NAME})
-
     for i in range(3):
+
+        if WANDB == "true":
+            wandb.login()
+            wandb.init(project = "Multi-IDRR-LLM",
+                    name = MODEL_NAME+"-"+str(i+1),
+                    config = {"Language": LANG,
+                                "Mode": MODE,
+                                "Model": MODEL_NAME})
 
         if MODE == "validation":
             df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_validation.csv")
