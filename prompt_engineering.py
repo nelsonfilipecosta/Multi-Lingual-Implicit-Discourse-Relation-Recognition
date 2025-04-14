@@ -67,9 +67,40 @@ def prompt_llama(model, messages):
                                               temperature = 0,
                                               max_tokens = 1024)
 
-    print(response.choices[0].message.content)
+    return response.choices[0].message.content
 
-    return 0
+
+def is_output_valid(response, expected_length=28):
+    try:
+        predictions_l3 = ast.literal_eval(response)
+        if (isinstance(predictions_l3, list) and                    # is output a list
+            len(predictions_l3) == expected_length and              # does the list have 28 values
+            all(isinstance(x, float) for x in predictions_l3) and   # are all values floats
+            abs(sum(predictions_l3) - 1) < 1e-4):                   # does the sum of the values equal 1
+
+            return True, predictions_l3
+
+    except Exception:
+        pass
+
+    return False, None
+
+
+def get_valid_output(model, messages, max_attempts=5):
+    for attempt in range(max_attempts):
+        if LLM == "gpt":
+            response = prompt_gpt(model, messages)
+        elif LLM == "llama":
+            response = prompt_llama(model, messages)
+
+        is_valid, predictions_l3 = is_output_valid(response)
+
+        if is_valid:
+            return predictions_l3
+
+    print(f"Max attempts ({max_attempts}) reached. Skipping this prompt.")
+
+    return None
 
 
 def get_lower_level_predictions(predictions_l3):
@@ -166,12 +197,11 @@ if __name__ == "__main__":
             messages = create_prompt(main_prompt, main_response, examples, EXAMPLES_NUMBER)
             messages.append({"role": "user", "content": question})
 
-            if LLM == "gpt":
-                response = prompt_gpt(MODEL_NAME, messages)
-            elif LLM == "llama":
-                response = prompt_llama(MODEL_NAME, messages)
+            predictions_l3 = get_valid_output(MODEL_NAME, messages)
 
-            predictions_l3 = ast.literal_eval(response)
+            if predictions_l3 is None:
+                continue
+
             predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
 
             js_distance_l1 += get_js_distance(predictions_l1, labels_l1[j])
@@ -186,6 +216,7 @@ if __name__ == "__main__":
         print("Level-2: ", js_distance_l2)
         print("Level-3: ", js_distance_l3)
 
-        wandb.log({"JS Distance (Level-1)": js_distance_l1,
-                   "JS Distance (Level-2)": js_distance_l2,
-                   "JS Distance (Level-3)": js_distance_l3})
+        if WANDB == "true":
+            wandb.log({"JS Distance (Level-1)": js_distance_l1,
+                    "JS Distance (Level-2)": js_distance_l2,
+                    "JS Distance (Level-3)": js_distance_l3})
