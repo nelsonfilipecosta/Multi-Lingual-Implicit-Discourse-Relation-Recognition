@@ -1,5 +1,6 @@
 import sys
 import ast
+import math
 import wandb
 import pandas as pd
 import openai
@@ -148,7 +149,13 @@ def get_js_distance(response, labels):
 
     js_distance = jensenshannon(normalized_labels, normalized_predictions, base=2)
 
-    return js_distance
+    if isinstance(js_distance, float) and math.isfinite(js_distance):
+        return js_distance
+    else:
+        print("Warning: Invalid Jensen-Shannon distance detected. Skipping this value.")
+        print("Labels: ", normalized_labels)
+        print("Predictions: ", normalized_predictions)
+        return 1.0
 
 
 if __name__ == "__main__":
@@ -177,7 +184,7 @@ if __name__ == "__main__":
             df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_test.csv")
 
         prompt_path = "Prompts/main_prompt_" + LANG + ".txt"
-        response_path = "Prompts/main_response_" + LANG + ".txt"
+        response_path = "Prompts/main_response.txt"
 
         arg_1 = df["arg1"].tolist()
         arg_2 = df["arg2"].tolist()
@@ -198,7 +205,7 @@ if __name__ == "__main__":
         for j in range(data_size):
             print(f"{j+1}/{data_size}")
             main_prompt = open(prompt_path).read()
-            main_response=  open(response_path).read()
+            main_response =  open(response_path).read()
             question = create_question(arg_1[j], arg_2[j])
 
             messages = create_prompt(main_prompt, main_response, examples, EXAMPLES_NUMBER)
