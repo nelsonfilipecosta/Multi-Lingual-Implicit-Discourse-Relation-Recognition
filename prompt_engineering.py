@@ -155,15 +155,15 @@ if __name__ == "__main__":
         client = together.Together()
         MODEL_NAME = "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
 
-    for i in range(3):
+    if WANDB == "true":
+        wandb.login()
+        wandb.init(project = "Multi-IDRR-LLM",
+                name = MODEL_NAME+"-"+str(i+1),
+                config = {"Language": LANG,
+                            "Mode": MODE,
+                            "Model": MODEL_NAME})
 
-        if WANDB == "true":
-            wandb.login()
-            wandb.init(project = "Multi-IDRR-LLM",
-                    name = MODEL_NAME+"-"+str(i+1),
-                    config = {"Language": LANG,
-                                "Mode": MODE,
-                                "Model": MODEL_NAME})
+    for i in range(3):
 
         if MODE == "validation":
             df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_validation.csv")
@@ -218,6 +218,7 @@ if __name__ == "__main__":
         js_distance_l2 /= (data_size - bad_outputs)
         js_distance_l3 /= (data_size - bad_outputs)
 
+        print("Average JS Distance")
         print("Level-1: ", js_distance_l1)
         print("Level-2: ", js_distance_l2)
         print("Level-3: ", js_distance_l3)
