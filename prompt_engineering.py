@@ -56,7 +56,7 @@ def prompt_gpt(model, messages):
     response = client.chat.completions.create(model = model,
                                               messages = messages,
                                               temperature = 0,
-                                              max_tokens = 1024)
+                                              max_completion_tokens = 256)
 
     return response.choices[0].message.content
 
@@ -65,7 +65,7 @@ def prompt_llama(model, messages):
     response = client.chat.completions.create(model = model,
                                               messages = messages,
                                               temperature = 0,
-                                              max_tokens = 1024)
+                                              max_completion_tokens = 256)
 
     return response.choices[0].message.content
 
@@ -207,6 +207,10 @@ if __name__ == "__main__":
             js_distance_l1 += get_js_distance(predictions_l1, labels_l1[j])
             js_distance_l2 += get_js_distance(predictions_l2, labels_l2[j])
             js_distance_l3 += get_js_distance(predictions_l3, labels_l3[j])
+
+            print("Level-1: ", get_js_distance(predictions_l1, labels_l1[j]))
+            print("Level-2: ", get_js_distance(predictions_l2, labels_l2[j]))
+            print("Level-3: ", get_js_distance(predictions_l3, labels_l3[j]))
         
         js_distance_l1 /= data_size
         js_distance_l2 /= data_size
@@ -218,5 +222,5 @@ if __name__ == "__main__":
 
         if WANDB == "true":
             wandb.log({"JS Distance (Level-1)": js_distance_l1,
-                    "JS Distance (Level-2)": js_distance_l2,
-                    "JS Distance (Level-3)": js_distance_l3})
+                       "JS Distance (Level-2)": js_distance_l2,
+                       "JS Distance (Level-3)": js_distance_l3})
