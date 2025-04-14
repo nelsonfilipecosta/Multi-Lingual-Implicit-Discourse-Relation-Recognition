@@ -1,9 +1,9 @@
-import os
 import sys
 import ast
 import wandb
 import pandas as pd
 import openai
+import together
 from scipy.spatial.distance import jensenshannon
 
 
@@ -61,6 +61,17 @@ def prompt_gpt(model, messages):
     return response.choices[0].message.content
 
 
+def prompt_llama(model, messages):
+    response = client.chat.completions.create(model = model,
+                                              messages = messages,
+                                              temperature = 0,
+                                              max_tokens = 1024)
+
+    print(response.choices[0].message.content)
+
+    return 0
+
+
 def get_lower_level_predictions(predictions_l3):
     synchronous = predictions_l3[0]
     asynchronous = predictions_l3[1]+predictions_l3[2]
@@ -109,6 +120,10 @@ if __name__ == "__main__":
         client = openai.OpenAI()
         MODEL_NAME = "gpt-4o-2024-11-20"
 
+    elif LLM == "llama":
+        client = together.Together()
+        MODEL_NAME = "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
+
     for i in range(3):
 
         if WANDB == "true":
@@ -153,6 +168,8 @@ if __name__ == "__main__":
 
             if LLM == "gpt":
                 response = prompt_gpt(MODEL_NAME, messages)
+            elif LLM == "llama":
+                response = prompt_llama(MODEL_NAME, messages)
 
             predictions_l3 = ast.literal_eval(response)
             predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
