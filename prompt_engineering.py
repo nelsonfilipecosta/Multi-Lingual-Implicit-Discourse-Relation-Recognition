@@ -17,7 +17,7 @@ if LANG not in ["all", "en", "de", "fr", "cs"]:
     print("Type a valid language: all, en, de, fr or cs.")
     exit()
 
-MODEL_NAME = "gpt-4o-mini"
+MODEL_NAME = "gpt-4o-2024-11-20"
 
 EXAMPLES_NUMBER = 5
 
@@ -100,60 +100,65 @@ def get_js_distance(response, labels):
 
 if __name__ == "__main__":
 
-    if WANDB == "true":
-        wandb.login()
-        wandb.init(project = "Multi-IDRR-LLM",
-                   name = MODEL_NAME,#+"-"+str(i+1),
-                   config = {"Language": LANG,
-                             "Mode": MODE,
-                             "Model": MODEL_NAME})
+    for i in range(3):
 
-    if MODE == "validation":
-        df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_validation.csv")
-    elif MODE == "test":
-        df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_test.csv")
+        if WANDB == "true":
+            wandb.login()
+            wandb.init(project = "Multi-IDRR-LLM",
+                    name = MODEL_NAME+"-"+str(i+1),
+                    config = {"Language": LANG,
+                                "Mode": MODE,
+                                "Model": MODEL_NAME})
 
-    prompt_path = "Prompts/main_prompt_" + LANG + ".txt"
-    response_path = "Prompts/main_response_" + LANG + ".txt"
+        if MODE == "validation":
+            df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_validation.csv")
+        elif MODE == "test":
+            df = pd.read_csv("Data/DiscoGeM-2.0/discogem_2_single_lang_" + LANG + "_test.csv")
 
-    arg_1 = df["arg1"].tolist()
-    arg_2 = df["arg2"].tolist()
-    labels_l1 = df.iloc[:,9:13].values.tolist()
-    labels_l2 = df.iloc[:,14:31].values.tolist()
-    labels_l3 = df.iloc[:,32:60].values.tolist()
+        prompt_path = "Prompts/main_prompt_" + LANG + ".txt"
+        response_path = "Prompts/main_response_" + LANG + ".txt"
 
-    if LANG == "en":
-        from Prompts.examples import examples_en as examples
+        arg_1 = df["arg1"].tolist()
+        arg_2 = df["arg2"].tolist()
+        labels_l1 = df.iloc[:,9:13].values.tolist()
+        labels_l2 = df.iloc[:,14:31].values.tolist()
+        labels_l3 = df.iloc[:,32:60].values.tolist()
 
-    js_distance_l1 = 0
-    js_distance_l2 = 0
-    js_distance_l3 = 0
+        if LANG == "en":
+            from Prompts.examples import examples_en as examples
 
-    for i in range(5):
-        main_prompt = open(prompt_path).read()
-        main_response=  open(response_path).read()
-        question = create_question(arg_1[i], arg_2[i])
+        js_distance_l1 = 0
+        js_distance_l2 = 0
+        js_distance_l3 = 0
 
-        messages = create_prompt(main_prompt, main_response, EXAMPLES_NUMBER)
-        messages.append({"role": "user", "content": question})
+        data_size = len(arg_1)
 
-        response = prompt_llm(MODEL_NAME, messages)
+        for j in range(data_size):
+            print(f"{j+1}/{data_size}")
+            main_prompt = open(prompt_path).read()
+            main_response=  open(response_path).read()
+            question = create_question(arg_1[j], arg_2[j])
 
-        predictions_l3 = ast.literal_eval(response)
-        predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
+            messages = create_prompt(main_prompt, main_response, EXAMPLES_NUMBER)
+            messages.append({"role": "user", "content": question})
 
-        js_distance_l1 += get_js_distance(predictions_l1, labels_l1[i])
-        js_distance_l2 += get_js_distance(predictions_l2, labels_l2[i])
-        js_distance_l3 += get_js_distance(predictions_l3, labels_l3[i])
-    
-    js_distance_l1 /= 5
-    js_distance_l2 /= 5
-    js_distance_l3 /= 5
+            response = prompt_llm(MODEL_NAME, messages)
 
-    print("Level-1: ", js_distance_l1)
-    print("Level-2: ", js_distance_l2)
-    print("Level-3: ", js_distance_l3)
+            predictions_l3 = ast.literal_eval(response)
+            predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
 
-    wandb.log({"JS Distance (Level-1)": js_distance_l1,
-               "JS Distance (Level-2)": js_distance_l2,
-               "JS Distance (Level-3)": js_distance_l3})
+            js_distance_l1 += get_js_distance(predictions_l1, labels_l1[j])
+            js_distance_l2 += get_js_distance(predictions_l2, labels_l2[j])
+            js_distance_l3 += get_js_distance(predictions_l3, labels_l3[j])
+        
+        js_distance_l1 /= data_size
+        js_distance_l2 /= data_size
+        js_distance_l3 /= data_size
+
+        print("Level-1: ", js_distance_l1)
+        print("Level-2: ", js_distance_l2)
+        print("Level-3: ", js_distance_l3)
+
+        wandb.log({"JS Distance (Level-1)": js_distance_l1,
+                "JS Distance (Level-2)": js_distance_l2,
+                "JS Distance (Level-3)": js_distance_l3})
