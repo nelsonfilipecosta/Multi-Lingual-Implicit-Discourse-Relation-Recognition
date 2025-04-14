@@ -192,8 +192,16 @@ if __name__ == "__main__":
         labels_l2 = df.iloc[:,14:31].values.tolist()
         labels_l3 = df.iloc[:,32:60].values.tolist()
 
-        if LANG == "en":
+        if LANG == "all":
+            from Prompts.examples import examples_all as examples
+        elif LANG == "en":
             from Prompts.examples import examples_en as examples
+        elif LANG == "de":
+            from Prompts.examples import examples_de as examples
+        elif LANG == "fr":
+            from Prompts.examples import examples_fr as examples
+        elif LANG == "cs":
+            from Prompts.examples import examples_cs as examples
 
         js_distance_l1 = 0
         js_distance_l2 = 0
