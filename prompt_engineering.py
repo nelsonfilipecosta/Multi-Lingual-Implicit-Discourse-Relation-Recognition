@@ -187,6 +187,7 @@ if __name__ == "__main__":
         js_distance_l3 = 0
 
         data_size = len(arg_1)
+        bad_outputs = 0
 
         for j in range(data_size):
             print(f"{j+1}/{data_size}")
@@ -200,6 +201,7 @@ if __name__ == "__main__":
             predictions_l3 = get_valid_output(MODEL_NAME, messages)
 
             if predictions_l3 is None:
+                bad_outputs += 1
                 continue
 
             predictions_l1, predictions_l2 = get_lower_level_predictions(predictions_l3)
@@ -212,9 +214,9 @@ if __name__ == "__main__":
             print("Level-2: ", get_js_distance(predictions_l2, labels_l2[j]))
             print("Level-3: ", get_js_distance(predictions_l3, labels_l3[j]))
         
-        js_distance_l1 /= data_size
-        js_distance_l2 /= data_size
-        js_distance_l3 /= data_size
+        js_distance_l1 /= (data_size - bad_outputs)
+        js_distance_l2 /= (data_size - bad_outputs)
+        js_distance_l3 /= (data_size - bad_outputs)
 
         print("Level-1: ", js_distance_l1)
         print("Level-2: ", js_distance_l2)
