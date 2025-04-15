@@ -1,5 +1,6 @@
 import sys
 import ast
+import time
 import math
 import wandb
 import pandas as pd
@@ -210,6 +211,9 @@ if __name__ == "__main__":
         data_size = len(arg_1)
         bad_outputs = 0
 
+        print('Starting prompting...')
+        start_time = time.time()
+
         for j in range(data_size):
             print(f"{j+1}/{data_size}")
             main_prompt = open(prompt_path).read()
@@ -248,3 +252,7 @@ if __name__ == "__main__":
             wandb.log({"JS Distance (Level-1)": js_distance_l1,
                        "JS Distance (Level-2)": js_distance_l2,
                        "JS Distance (Level-3)": js_distance_l3})
+
+        print(f'Total prompting time: {(time.time()-start_time)/60:.2f} minutes')
+
+        wandb.finish()
