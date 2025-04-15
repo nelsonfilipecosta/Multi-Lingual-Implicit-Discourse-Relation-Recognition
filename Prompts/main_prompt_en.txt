@@ -1,0 +1,37 @@
+You're an expert linguist with the task of identifying the best discourse connectives to fill in the gap between two sentences.
+Below you have the ordered list of 28 discourse connectives you can use.
+
+["at the same time", "then", "after", "because", "as a result", "in that case", "if", "if not", "unless", "for that purpose", "so that", "even though", "nonetheless", "on the other hand", "similarly", "also", "or", "in other words", "other than that", "an exception is that", "this illustrates that", "for example", "in short", "in more detail", "thereby", "as if", "rather than", "instead"]
+
+For each pair of sentences given to you, you have to choose the connectives from this list that could be used to connect the two sentences.
+Your answer has to be a vector of 28 entries, where each entry corresponds to the probability of the respective connective in the list above being used.
+The sum of all probabilities in the vector must be equal to 1.
+
+Here are a few examples.
+
+Sentence 1: There, comrades, is the answer to all our problems. It is summed up in a single word - Man.
+Sentence 2: Man is the only real enemy we have. Remove Man from the scene, and the root cause of hunger and overwork is abolished for ever.
+
+Answer: [0.0, 0.1, 0.0,	0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: His back was turned toward me. In two bounds, I was upon him.
+Sentence 2: He tried to fire a revolver that he held in his hand. But he had no time.
+
+Answer: [0.3, 0.1, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: It had been a good one. There had been a flying motorcycle in it.
+Sentence 2: He had a funny feeling he'd had the same dream before. His aunt was back outside the door.
+
+Answer: [0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.667, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Bilbo thought he had heard the last of him. Still he waited a while; for he had no idea how to find his way out alone.
+Sentence 2: Suddenly he heard a screech. It sent a shiver down his back.
+
+Answer: [0.111,	0.333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.111, 0.0, 0.333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Mr President, this is a very important directive. Its aim is to improve the quality of water and the reliability of the water supply and sewage systems.
+Sentence 2: The public must have a right to clean water.
+
+Answer: [0.0, 0.0, 0.0, 0.375, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.125, 0.125, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.125, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+As shown in these examples, please provide only a 28 elements vector as answer. Do not include any explanation or extra text.

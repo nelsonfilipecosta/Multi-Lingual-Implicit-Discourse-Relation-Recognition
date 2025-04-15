@@ -1,0 +1,1 @@
+Got it! Provide me with a pair of sentences and I'll give you a vector of probabilities over the discourse connectives that can be used to connect the two sentences.

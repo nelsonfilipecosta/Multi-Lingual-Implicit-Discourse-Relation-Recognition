@@ -1,0 +1,40 @@
+You're an expert linguist in the English, German, French and Czech language with the task of identifying the best discourse connectives to fill in the gap between two sentences in English, German, French and Czech.
+Below you have the ordered list of 28 discourse connectives you can use for each language.
+
+English: ["at the same time", "then", "after", "because", "as a result", "in that case", "if", "if not", "unless", "for that purpose", "so that", "even though", "nonetheless", "on the other hand", "similarly", "also", "or", "in other words", "other than that", "an exception is that", "this illustrates that", "for example", "in short", "in more detail", "thereby", "as if", "rather than", "instead"]
+German: ["gleichzeitig", "dann", "davor,", "weil", "daher", "insofern", "wenn", "sonst", "es sei denn", "dazu", "sodass", "obwohl", "trotzdem", "andererseits", "gleichermaßen", "darüberhinaus", "oder", "anders gesagt", "abgesehen von dieser Ausnahme", "eine Ausnahme ist, dass", "das verdeutlicht, dass", "zum Beispiel", "um es kurz zu machen", "genauer gesagt", "hiermit", "mittels", "anstatt, dass", "stattdessen"]
+French: ["en même temps", "ensuite", "après que", "parce que", "c'est pourquoi", "dans ce cas", "si", "sinon", "à moins que", "à cette fin", "afin que", "bien que", "néanmoins", "d'autre part", "de même", "en plus", "ou", "en d'autres termes", "à part ça", "une exception est que", "cela illustre que", "par exemple", "bref", "plus précisement", "de cette manière", "comme si", "plutôt que", "au lieu de"]
+Czech: ["zároveň", "potom", "předtím", "protože", "prozo", "v tom případě", "pokud", "jinak", "ledaže", "za tím účelem", "aby", "a to i přesto, že", "přesto", "na druhou stranu", "podobně", "také", "nebo", "jinými slovy", "kromě této výjimky", "výjimkou je to, že", "to je příkladem toho, že", "například", "zkrátka", "konkrétně", "tímto způsobem", "následujícím způsobem", "místo, aby", "místo toho"]
+
+For each pair of sentences given to you, you have to choose the connectives from the list in the corresponding language that could be used to connect the two sentences.
+Your answer has to be a vector of 28 entries, where each entry corresponds to the probability of the respective connective in the list being used.
+The sum of all probabilities in the vector must be equal to 1.
+
+Here are a few examples.
+
+Sentence 1: His back was turned toward me. In two bounds, I was upon him.
+Sentence 2: He tried to fire a revolver that he held in his hand. But he had no time.
+
+Answer: [0.3, 0.1, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: It had been a good one. There had been a flying motorcycle in it.
+Sentence 2: He had a funny feeling he'd had the same dream before. His aunt was back outside the door.
+
+Answer: [0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.667, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Hübsch ist es auf dem Floß .Mücken stechen mich, das ist lästig. —Ich befinde mich unter dem Floß.
+Sentence 2: Hübsch ist es unter dem Floß. Keine Mücke sticht mich, das ist angenehm.
+
+Answer: [0.3, 0.0, 0.0, 0.2, 0.1, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Le banquier se baissa vivement. Un coup de feu jaillit.
+Sentence 2: L' arme tomba. Je fus stupéfait.
+
+Answer: [0.111, 0.778, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Ve vnitřní kapse pláště našel, co hledal. Vypadalo to jako stříbrný zapalovač.
+Sentence 2: Otevřel ho, pozvedl vzhůru a cvakl. Nejbližší pouliční svítilna s tichým zapraskáním zhasla.
+
+Answer: [0.0, 0.833, 0.0, 0.0, 0.167, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+As shown in these examples, please provide only a 28 elements vector as answer. Do not include any explanation or extra text.

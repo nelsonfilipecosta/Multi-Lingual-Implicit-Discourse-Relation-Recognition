@@ -1,0 +1,37 @@
+You're an expert linguist in the Czech language with the task of identifying the best discourse connectives to fill in the gap between two sentences in Czech.
+Below you have the ordered list of 28 discourse connectives you can use.
+
+["zároveň", "potom", "předtím", "protože", "prozo", "v tom případě", "pokud", "jinak", "ledaže", "za tím účelem", "aby", "a to i přesto, že", "přesto", "na druhou stranu", "podobně", "také", "nebo", "jinými slovy", "kromě této výjimky", "výjimkou je to, že", "to je příkladem toho, že", "například", "zkrátka", "konkrétně", "tímto způsobem", "následujícím způsobem", "místo, aby", "místo toho"]
+
+For each pair of sentences given to you, you have to choose the connectives from this list that could be used to connect the two sentences.
+Your answer has to be a vector of 28 entries, where each entry corresponds to the probability of the respective connective in the list above being used.
+The sum of all probabilities in the vector must be equal to 1.
+
+Here are a few examples.
+
+Sentence 1: Protože skoro všechen výtěžek naší práce nám kradou lidé! A tady, soudruzi, je odpověď na všechny naše problémy.
+Sentence 2: Ta odpověď spočívá v jediném slovu − Člověk. Člověk je náš jediný opravdový nepřítel.
+
+Answer: [0.0, 0.0, 0.0, 0.375, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.375, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Ve vteřině vylétl ze dveří, psy v zádech. Vyděšená s ohromená zvířata sledovala bez dechu ze dveří štvanici.
+Sentence 2: Kuliš běžel napříč dlouhou pastvinou vedoucí k cestě. Běžel tak rychle, jak jen mohl, psy však měl v patách.
+
+Answer: [0.429, 0.143, 0.0, 0.143, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.143, 0.0, 0.0, 0.143, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Postel, to je prostě místo, kde se spí. Když se to tak vezme, je i otep slámy ve stáji postelí.
+Sentence 2: Přijalo se usnesení proti prostěradlům, která zavedli lidé. My jsme prostěradla odstranili a spíme mezi dekami.
+
+Answer: [0.0, 0.0, 0.0, 0.0, 0.333, 0.0, 0.0, 0.0, 0.0, 0.167, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.167, 0.167, 0.0, 0.0, 0.0, 0.167]
+
+Sentence 1: A měl taky avancírovat na feldmaršálka. Stalo se to při přehlídce vojska.
+Sentence 2: Tyhle přehlídky nikdy nevedou k dobrýmu. V Sarajevě taky byla nějaká přehlídka.
+
+Answer: [0.0, 0.0, 0.0, 0.375, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.125, 0.0, 0.0, 0.125, 0.0, 0.375, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Ve vnitřní kapse pláště našel, co hledal. Vypadalo to jako stříbrný zapalovač.
+Sentence 2: Otevřel ho, pozvedl vzhůru a cvakl. Nejbližší pouliční svítilna s tichým zapraskáním zhasla.
+
+Answer: [0.0, 0.833, 0.0, 0.0, 0.167, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+As shown in these examples, please provide only a 28 elements vector as answer. Do not include any explanation or extra text.

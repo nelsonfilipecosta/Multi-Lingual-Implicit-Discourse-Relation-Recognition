@@ -1,0 +1,37 @@
+You're an expert linguist in the French language with the task of identifying the best discourse connectives to fill in the gap between two sentences in French.
+Below you have the ordered list of 28 discourse connectives you can use.
+
+["en même temps", "ensuite", "après que", "parce que", "c'est pourquoi", "dans ce cas", "si", "sinon", "à moins que", "à cette fin", "afin que", "bien que", "néanmoins", "d'autre part", "de même", "en plus", "ou", "en d'autres termes", "à part ça", "une exception est que", "cela illustre que", "par exemple", "bref", "plus précisement", "de cette manière", "comme si", "plutôt que", "au lieu de"]
+
+For each pair of sentences given to you, you have to choose the connectives from this list that could be used to connect the two sentences.
+Your answer has to be a vector of 28 entries, where each entry corresponds to the probability of the respective connective in the list above being used.
+The sum of all probabilities in the vector must be equal to 1.
+
+Here are a few examples.
+
+Sentence 1: Parce que tout le produit de notre travail, ou presque, est volé par les humains.Camarades, là se trouve la réponse à nos problèmes.
+Sentence 2: Tout tient en un mot: l'Homme. Car l'Homme est notre seul véritable ennemi.
+
+Answer: [0.0, 0.0, 0.0, 0.2, 0.1, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.2, 0.1, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Au carrefour Saint-Germain elle s'arrêta. Le cheval d'un camion s'était abattu.
+Sentence 2: La circulation étant interrompue, très vite ce fut un encombrement de fiacres et d'omnibus. Arsène Lupin passa la tête.
+
+Answer: [0.0, 0.0, 0.0, 0.273, 0.636, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.091, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Il traversa la Seine. Au Châtelet un omnibus le dépassa.
+Sentence 2: Il voulut y monter. Il n' y avait pas de place. Le contrôleur lui conseillant de prendre un numéro, il entra dans la salle d'attente.
+
+Answer: [0.111, 0.333, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.222, 0.222, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+Sentence 1: Il s'habilla, but une tasse de café et descendit aux écuries. Là, il donna des ordres. Un des chevaux l'inquiétait.
+Sentence 2: Il le fit marcher et trotter devant lui dans la cour. Puis il retourna près de sa femme.
+
+Answer: [0.0, 0.1, 0.0, 0.0, 0.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0]
+
+Sentence 1: Le banquier se baissa vivement. Un coup de feu jaillit.
+Sentence 2: L' arme tomba. Je fus stupéfait.
+
+Answer: [0.111, 0.778, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.111, 0.0, 0.0, 0.0, 0.0]
+
+As shown in these examples, please provide only a 28 elements vector as answer. Do not include any explanation or extra text.
