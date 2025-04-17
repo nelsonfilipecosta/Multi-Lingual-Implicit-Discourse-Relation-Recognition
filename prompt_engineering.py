@@ -90,15 +90,24 @@ def is_output_valid(response, expected_length=28):
 
 def get_valid_output(model, messages, max_attempts=5):
     for attempt in range(max_attempts):
-        if LLM == "gpt":
-            response = prompt_gpt(model, messages)
-        elif LLM == "llama":
-            response = prompt_llama(model, messages)
+        try:
+            if LLM == "gpt":
+                response = prompt_gpt(model, messages)
+            elif LLM == "llama":
+                response = prompt_llama(model, messages)
 
-        is_valid, predictions_l3 = is_output_valid(response)
+            is_valid, predictions_l3 = is_output_valid(response)
 
-        if is_valid:
-            return predictions_l3
+            if is_valid:
+                return predictions_l3
+
+        except openai.RateLimitError as e:
+            print(f"Rate limit hit (attempt {attempt+1}/{max_attempts}): {e}")
+            time.sleep(2 ** attempt)
+
+        except Exception as e:
+            print(f"Unexpected error (attempt {attempt+1}/{max_attempts}): {e}")
+            time.sleep(1)
 
     print(f"Max attempts ({max_attempts}) reached. Skipping this prompt.")
 
