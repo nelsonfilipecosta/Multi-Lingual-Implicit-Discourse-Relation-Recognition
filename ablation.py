@@ -22,7 +22,7 @@ NUMBER_OF_SENSES = {'level_1': 4,
                     'level_3': 28}
 
 if len(sys.argv) != 9:
-    print('The expected comand should be: python classification_model.py language architecture model loss optimizer learning_rate scheduler wandb')
+    print('The expected comand should be: python ablation.py language level model loss optimizer learning_rate scheduler wandb')
     sys.exit()
 
 LANG = sys.argv[1]
