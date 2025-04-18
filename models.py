@@ -48,7 +48,7 @@ class Multi_IDDR_Classifier(torch.nn.Module):
 
 
 class Multi_IDDR_Classifier_Concat(torch.nn.Module):
-    'Multi-head classification model for multi-label implicit discourse relation recognition.'
+    'Some text here'
     
     def __init__(self, model_name, number_of_senses):
         super().__init__()
@@ -197,4 +197,27 @@ class Multi_IDDR_Classifier_WSum_T5(torch.nn.Module):
         logits = {'classifier_level_1': output_1,
                   'classifier_level_2': output_2,
                   'classifier_level_3': output_3}
+        return logits
+
+
+class Multi_IDDR_Classifier_Ablation(torch.nn.Module):
+    'Some text here'
+    
+    def __init__(self, model_name, number_of_senses):
+        super().__init__()
+        self.pretrained_model   = AutoModel.from_pretrained(model_name)
+        hidden_dimension        = self.pretrained_model.config.hidden_size
+        # common layers
+        self.hidden             = torch.nn.Linear(hidden_dimension, hidden_dimension)
+        self.dropout            = torch.nn.Dropout(p=0.5)
+        # classification layer for single level
+        self.classifier         = torch.nn.Linear(hidden_dimension, number_of_senses)
+    
+    def forward(self, input_ids, attention_mask):
+        llm_states = self.pretrained_model(input_ids=input_ids, attention_mask=attention_mask)
+        last_hidden_state = llm_states.last_hidden_state
+        output = last_hidden_state[:, 0]
+        output = self.hidden(output)
+        output = self.dropout(output)
+        logits = self.classifier(output)
         return logits
