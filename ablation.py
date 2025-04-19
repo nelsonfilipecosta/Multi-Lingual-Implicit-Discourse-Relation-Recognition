@@ -224,9 +224,9 @@ for i in range(3):
     if WANDB == 'true':
         wandb.login()
         wandb.init(project = 'Multi-IDRR',
-                   name = LANG+'-ABLATION-'+str(LEVEL)+'-'+MODEL_NAME+'-'+str(LEARNING_RATE)+'-'+str(i+1),
+                   name = LANG+'-ablation-'+str(LEVEL)+'-'+MODEL_NAME+'-'+str(LEARNING_RATE)+'-'+str(i+1),
                    config = {'Language': LANG,
-                             'Architecture': 'ABLATION-'+str(LEVEL),
+                             'Architecture': 'ablation-'+str(LEVEL),
                              'Model': MODEL_NAME,
                              'Epochs': EPOCHS,
                              'Batch Size': BATCH_SIZE,
