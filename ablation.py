@@ -66,18 +66,26 @@ if WANDB not in ['true', 'false']:
     exit()
 
 
-def log_wandb(mode, js_1, js_2, js_3, loss=None):
+def log_wandb(mode, js, LEVEL, loss=None):
     'Log metrics on Weights & Biases.'
 
     if mode == 'Training':
-        wandb.log({mode + ' JS Distance (Level-1)': js_1,
-                   mode + ' JS Distance (Level-2)': js_2,
-                   mode + ' JS Distance (Level-3)': js_3,
-                   mode + ' Loss'                 : loss})
-    else: 
-        wandb.log({mode + ' JS Distance (Level-1)': js_1,
-                   mode + ' JS Distance (Level-2)': js_2,
-                   mode + ' JS Distance (Level-3)': js_3})
+        if LEVEL == 1:
+            wandb.log({mode + ' JS Distance (Level-1)': js,
+                       mode + ' Loss'                 : loss})
+        elif LEVEL == 2:
+            wandb.log({mode + ' JS Distance (Level-2)': js,
+                       mode + ' Loss'                 : loss})
+        else:
+            wandb.log({mode + ' JS Distance (Level-3)': js,
+                       mode + ' Loss'                 : loss})
+    else:
+        if LEVEL == 1:
+            wandb.log({mode + ' JS Distance (Level-1)': js})
+        elif LEVEL == 2:
+            wandb.log({mode + ' JS Distance (Level-2)': js})
+        else:
+            wandb.log({mode + ' JS Distance (Level-3)': js})
 
 
 def create_dataloader(path):
@@ -178,7 +186,7 @@ def train_loop(dataloader, scheduler_bool=False):
                 js = get_js_distance('Level-3', batch['labels_level_3'], model_output)
             
             if WANDB == 'true':
-                log_wandb('Training', js, loss)
+                log_wandb('Training', js, LEVEL, loss)
     
     return model.state_dict()
 
@@ -208,7 +216,7 @@ def test_loop(mode, dataloader, scheduler_bool=False, iteration=None):
     js = js / len(dataloader)
     
     if WANDB == 'true':
-        log_wandb(mode, js)
+        log_wandb(mode, js, LEVEL)
 
 
 for i in range(3):
