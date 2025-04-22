@@ -31,7 +31,7 @@ if LANG not in ['all', 'en', 'de', 'fr', 'cs']:
     exit()
 
 LEVEL = int(sys.argv[2])
-if LEVEL not in [1, 2 or 3]:
+if LEVEL not in [1, 2, 3]:
     print('Type a valid level: 1, 2 or 3.')
     exit()
 
